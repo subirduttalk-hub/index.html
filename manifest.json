@@ -1,0 +1,18 @@
+{
+  "name": "আমন্ত্রণ Banquet",
+  "short_name": "আমন্ত্রণ",
+  "description": "আমন্ত্রণ Banquet — Book your perfect venue",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a0f05",
+  "theme_color": "#1a0f05",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
