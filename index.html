@@ -527,7 +527,27 @@
           <option>Corporate Meeting</option>
         </select>
       </div>
-      <div class="field"><label>Event Date</label><input id="bk-date" type="date"></div>
+      <div class="field full">
+        <label>Event Date</label>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:400;cursor:pointer">
+            <input type="radio" name="date-type" value="single" checked onchange="toggleDateType('single')" style="accent-color:#c9a84c"> Single Day
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:400;cursor:pointer">
+            <input type="radio" name="date-type" value="multi" onchange="toggleDateType('multi')" style="accent-color:#c9a84c"> Multiple Days
+          </label>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:130px">
+            <label style="font-size:0.7rem;color:#999;display:block;margin-bottom:4px">Start Date</label>
+            <input id="bk-date" type="date" style="width:100%">
+          </div>
+          <div style="flex:1;min-width:130px" id="end-date-wrap" hidden>
+            <label style="font-size:0.7rem;color:#999;display:block;margin-bottom:4px">End Date</label>
+            <input id="bk-date-end" type="date" style="width:100%">
+          </div>
+        </div>
+      </div>
       <div class="field"><label>No. of Guests</label><input id="bk-guests" type="number" placeholder="e.g. 300"></div>
       <div class="field"><label>Advance Amount (₹)</label><input id="bk-advance" type="number" placeholder="e.g. 25000"></div>
       <div class="field full"><label>Special Requirements</label><textarea id="bk-notes" placeholder="Decor preferences, dietary needs..."></textarea></div>
@@ -583,6 +603,17 @@
       <p>Click to upload photos · JPG, PNG, WEBP</p>
     </label>
     <input type="file" id="fileInput" multiple accept="image/*" onchange="handleImageUpload(event)">
+    <div style="margin-top:10px;display:flex;align-items:center;gap:10px;justify-content:center">
+      <label style="font-size:0.75rem;color:#888">Category:</label>
+      <select id="upload-cat" onchange="activeGalleryUploadCat=this.value" style="padding:6px 10px;border:1px solid #e0d4b8;font-size:0.78rem;background:#fffdf7">
+        <option value="Wedding">Wedding</option>
+        <option value="Rice Ceremony">Rice Ceremony</option>
+        <option value="Birthday">Birthday</option>
+        <option value="Engagement">Engagement</option>
+        <option value="Reception">Reception</option>
+        <option value="Corporate">Corporate</option>
+      </select>
+    </div>
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterGallery('all',this)">All</button>
       <button class="filter-btn" onclick="filterGallery('Rice Ceremony',this)">Rice Ceremony</button>
@@ -779,9 +810,10 @@
 <script>
 // ── STATE ──────────────────────────────────
 let savedPackages = [];
-let selectedBookingPkgId = null;
+let selectedBookingPkgIds = [];
 let bookings = [];
 let transactions = [];
+let activeGalleryUploadCat = 'Wedding';
 let galleryItems = [
   {caption:'Grand Ballroom Setup',cat:'Marriage Ceremony',icon:'🌹'},
   {caption:'Corporate Meeting Setup',cat:'Corporate Meeting',icon:'🎤'},
@@ -1080,7 +1112,7 @@ function renderBookingPackages(){
       :'<span style="font-size:0.7rem;color:#bbb">কোনো facility নেই</span>';
     const clickable = isAdmin ? `onclick="selectBookingPkg(${p.id},this)"` : '';
     return `
-    <div class="bk-pkg-card ${selectedBookingPkgId===p.id?'selected':''}" ${clickable} style="${!isAdmin?'cursor:default':''}">
+    <div class="bk-pkg-card ${selectedBookingPkgIds.includes(p.id)?'selected':''}" ${clickable} style="${!isAdmin?'cursor:default':''}">
       <span class="bpk-check">✔</span>
       <div class="bpk-name">${p.name} Package</div>
       <div class="bpk-rate">${p.rate?'₹'+p.rate.toLocaleString('en-IN'):'No rate'}</div>
@@ -1091,15 +1123,18 @@ function renderBookingPackages(){
 }
 
 function selectBookingPkg(id,el){
-  selectedBookingPkgId=id;
-  document.querySelectorAll('.bk-pkg-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
+  const idx=selectedBookingPkgIds.indexOf(id);
+  if(idx>=0){ selectedBookingPkgIds.splice(idx,1); el.classList.remove('selected'); }
+  else { selectedBookingPkgIds.push(id); el.classList.add('selected'); }
 }
 
 function addBooking(){
   const name=document.getElementById('bk-name').value.trim();
   const date=document.getElementById('bk-date').value;
+  const multiMode=document.querySelector('input[name="date-type"]:checked')?.value==='multi';
+  const dateEnd=multiMode?document.getElementById('bk-date-end').value:'';
   if(!name||!date){showToast('Name এবং Date আবশ্যক');return;}
+  if(multiMode&&dateEnd&&dateEnd<date){showToast('End date, start date এর আগে হতে পারবে না');return;}
   // Check if date already booked
   if(bookings.some(b=>b.date===date)){showToast('⚠ এই তারিখটি ইতিমধ্যে বুক করা আছে!');return;}
   const type=document.getElementById('bk-type').value;
@@ -1108,8 +1143,9 @@ function addBooking(){
   const phone=document.getElementById('bk-phone').value.trim();
   const email=document.getElementById('bk-email').value.trim();
   const notes=document.getElementById('bk-notes').value.trim();
-  const pkg=savedPackages.find(p=>p.id===selectedBookingPkgId);
-  const booking={name,phone,email,date,type,guests,advance,notes,pkg:pkg?pkg.name:'Custom',status:'Confirmed',id:Date.now()};
+  const selectedPkgs=savedPackages.filter(p=>selectedBookingPkgIds.includes(p.id));
+  const pkgNames=selectedPkgs.length?selectedPkgs.map(p=>p.name).join(', '):'Custom';
+  const booking={name,phone,email,date,dateEnd:dateEnd||date,type,guests,advance,notes,pkg:pkgNames,pkgIds:[...selectedBookingPkgIds],status:'Confirmed',id:Date.now()};
   bookings.unshift(booking);
   if(advance)transactions.unshift({desc:'Advance — '+name+' ('+type+')',amt:Number(advance),type:'income',date,id:Date.now()});
   renderBookings(); saveToStorage();
@@ -1117,7 +1153,11 @@ function addBooking(){
   syncSheet('Bookings', bookings); syncSheet('Transactions', transactions);
   sendConfirmationEmail(booking, pkg);
   showToast('✔ Booking confirmed for '+name+'! Sending email...');
-  ['bk-name','bk-phone','bk-email','bk-date','bk-guests','bk-advance','bk-notes'].forEach(id=>document.getElementById(id).value='');
+  ['bk-name','bk-phone','bk-email','bk-date','bk-date-end','bk-guests','bk-advance','bk-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  selectedBookingPkgIds=[];
+  document.querySelectorAll('.bk-pkg-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelector('input[name="date-type"][value="single"]').checked=true;
+  toggleDateType('single');
 }
 
 function renderBookings(){
@@ -1127,7 +1167,7 @@ function renderBookings(){
     <div class="booking-item">
       <div class="booking-info">
         <h4>${b.name} — ${b.type}</h4>
-        <p>${b.pkg} Package · ${b.guests||'?'} guests · ${formatDate(b.date)}${b.advance?' · Advance: ₹'+Number(b.advance).toLocaleString('en-IN'):''}</p>
+        <p>${b.pkg?b.pkg+' Package':''} · ${b.guests||'?'} guests · ${b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' → '+formatDate(b.dateEnd):formatDate(b.date)}${b.advance?' · Advance: ₹'+Number(b.advance).toLocaleString('en-IN'):''}</p>
       </div>
       <span class="booking-badge badge-confirmed">✔ ${b.status}</span>
     </div>`).join('');
@@ -1164,8 +1204,9 @@ function handleImageUpload(e){
   Array.from(e.target.files).forEach(file=>{
     const reader=new FileReader();
     reader.onload=ev=>{
-      galleryItems.unshift({caption:file.name.replace(/\.[^.]+$/,''),cat:'Wedding',icon:null,src:ev.target.result});
+      galleryItems.unshift({caption:file.name.replace(/\.[^.]+$/,''),cat:activeGalleryUploadCat||'Wedding',icon:null,src:ev.target.result});
       renderGallery();
+      saveToStorage();
     };
     reader.readAsDataURL(file);
   });
@@ -1258,6 +1299,12 @@ let calMonth = new Date().getMonth();
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
+function toggleDateType(type){
+  const wrap=document.getElementById('end-date-wrap');
+  if(type==='multi'){ wrap.removeAttribute('hidden'); }
+  else { wrap.setAttribute('hidden',''); document.getElementById('bk-date-end').value=''; }
+}
+
 function changeMonth(dir){ calMonth+=dir; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
 
 function renderCalendar(){
@@ -1269,12 +1316,20 @@ function renderCalendar(){
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const todayStr=today();
   // Booked dates this month
-  const bookedDates=bookings.map(b=>b.date);
+  // Build set of all booked dates (including ranges)
+  const bookedDates=new Set();
+  bookings.filter(b=>b.date).forEach(b=>{
+    const start=new Date(b.date+'T00:00:00');
+    const end=b.dateEnd?new Date(b.dateEnd+'T00:00:00'):start;
+    for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+      bookedDates.add(d.toISOString().split('T')[0]);
+    }
+  });
   // Empty cells
   for(let i=0;i<firstDay;i++) html+=`<div class="cal-cell cal-empty"></div>`;
   for(let d=1;d<=daysInMonth;d++){
     const ds=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const isBooked=bookedDates.includes(ds);
+    const isBooked=bookedDates.has(ds);
     const isToday=ds===todayStr;
     const cls=['cal-cell',isBooked?'cal-booked':'',isToday&&!isBooked?'cal-today':''].filter(Boolean).join(' ');
     html+=`<div class="${cls}" title="${isBooked?getBookingForDate(ds)?.name+' – '+getBookingForDate(ds)?.type:'Available'}">
@@ -1284,17 +1339,17 @@ function renderCalendar(){
   }
   grid.innerHTML=html;
   // Booked list
-  const monthBookings=bookings.filter(b=>b.date.startsWith(calYear+'-'+String(calMonth+1).padStart(2,'0'))).sort((a,b)=>a.date.localeCompare(b.date));
+  const monthBookings=bookings.filter(b=>b.date&&b.date.startsWith(calYear+'-'+String(calMonth+1).padStart(2,'0'))).sort((a,b)=>a.date.localeCompare(b.date));
   const evDiv=document.getElementById('cal-booked-events');
   if(!monthBookings.length){ evDiv.innerHTML='<div class="no-data" style="padding:20px">This month has no bookings yet.</div>'; return; }
   evDiv.innerHTML=monthBookings.map(b=>`
     <div class="cal-event-row">
       <div class="cal-event-date">${formatDate(b.date)}</div>
-      <div class="cal-event-info">${b.name} — ${b.type}<br><span>${b.pkg} Package · ${b.guests||'?'} guests</span></div>
+      <div class="cal-event-info">${b.name} — ${b.type}<br><span>${b.pkg?b.pkg+' Package':''} · ${b.guests||'?'} guests${b.dateEnd&&b.dateEnd!==b.date?' · '+formatDate(b.date)+' → '+formatDate(b.dateEnd):''}</span></div>
     </div>`).join('');
 }
 
-function getBookingForDate(ds){ return bookings.find(b=>b.date===ds); }
+function getBookingForDate(ds){ return bookings.find(b=>{ const s=new Date(b.date+'T00:00:00'); const e=b.dateEnd?new Date(b.dateEnd+'T00:00:00'):s; const t=new Date(ds+'T00:00:00'); return t>=s&&t<=e; }); }
 
 // ── EMAIL + WHATSAPP CONFIRMATION ────────────
 function sendConfirmationEmail(booking, pkg){
@@ -1309,7 +1364,7 @@ function sendConfirmationEmail(booking, pkg){
     `Phone: ${booking.phone||'—'}%0A`+
     `Email: ${booking.email||'—'}%0A`+
     `Event: ${booking.type}%0A`+
-    `Date: ${formatDate(booking.date)}%0A`+
+    `Date: ${booking.dateEnd&&booking.dateEnd!==booking.date?formatDate(booking.date)+' to '+formatDate(booking.dateEnd):formatDate(booking.date)}%0A`+
     `Guests: ${booking.guests||'—'}%0A`+
     `Package: ${pkgDetails}%0A`+
     `Facilities: ${facilities}%0A`+
@@ -1372,11 +1427,34 @@ function showConfirmPanel(booking, mailtoLink, waLink, adminEmail){
 }
 
 // ── HELPERS ─────────────────────────────────
-function today(){return new Date().toISOString().split('T')[0];}
+function today(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+// Sheet থেকে আসা date normalize করো (UTC ISO → local YYYY-MM-DD)
+function normalizeDate(d){
+  if(!d) return '';
+  if(typeof d === 'string'){
+    // Already YYYY-MM-DD format
+    if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+    // ISO format with time: 2026-04-25T18:30:00.000Z → local date
+    if(d.includes('T')){
+      const dt = new Date(d);
+      return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+    }
+  }
+  if(d instanceof Date){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  return String(d).split('T')[0];
+}
 function formatDate(d){
   if(!d)return'—';
+  const nd=normalizeDate(d);
+  if(!nd||nd==='NaN-NaN-NaN')return'—';
   const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const dt=new Date(d+'T00:00:00');
+  const dt=new Date(nd+'T00:00:00');
   return dt.getDate()+' '+m[dt.getMonth()]+' '+dt.getFullYear();
 }
 let toastTimer=null;
@@ -1427,7 +1505,7 @@ function resetSettings(){
 
 // ── GOOGLE SHEETS SYNC ───────────────────────
 // তোমার Apps Script Web App URL এখানে বসাও:
-let SHEETS_URL = 'https://script.google.com/macros/s/AKfycbysjOIR_qtP6vAhRsKrnJCBQsOlASueqSBjj5RbXlstFuMv6VbnDyeDLWaN_wO1dpZE/exec';
+let SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzeG7yndwlfqmCfEq6OlLw3OWlDOLoHMo_efdBA0eHUwrpoDs7sUMjnvTZrVldocPB9/exec';
 
 function setSheetsURL(url){
   if(!url.trim()){showToast('URL দাও');return;}
@@ -1440,19 +1518,39 @@ function setSheetsURL(url){
 async function sheetsFetch(payload){
   if(!SHEETS_URL) return null;
   try {
-    const res = await fetch(SHEETS_URL, {
-      method:'POST',
+    // Use no-cors for POST (fire & forget — Apps Script saves data)
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
-    return await res.json();
-  } catch(e){ console.warn('Sheets error:', e); return null; }
+    return true;
+  } catch(e){ console.warn('Sheets POST error:', e); return null; }
 }
 
 async function sheetsGet(sheet){
   if(!SHEETS_URL) return null;
   try {
-    const res = await fetch(SHEETS_URL + '?action=get&sheet=' + sheet);
-    return await res.json();
+    // Use JSONP-style GET via script tag to bypass CORS
+    return await new Promise((resolve) => {
+      const cbName = '_cb_' + Date.now();
+      const script = document.createElement('script');
+      const timeout = setTimeout(() => {
+        delete window[cbName];
+        document.body.removeChild(script);
+        resolve(null);
+      }, 8000);
+      window[cbName] = (data) => {
+        clearTimeout(timeout);
+        delete window[cbName];
+        document.body.removeChild(script);
+        resolve(data);
+      };
+      script.src = SHEETS_URL + '?action=get&sheet=' + encodeURIComponent(sheet) + '&callback=' + cbName;
+      script.onerror = () => { clearTimeout(timeout); resolve(null); };
+      document.body.appendChild(script);
+    });
   } catch(e){ return null; }
 }
 
@@ -1463,13 +1561,20 @@ async function syncSheet(sheetName, data){
 
 async function syncAll(){
   if(!SHEETS_URL){ showToast('⚠ Sheets URL দেওয়া নেই'); return; }
-  showToast('🔄 Google Sheets এ sync হচ্ছে...');
-  await syncSheet('Bookings', bookings);
-  await syncSheet('Packages', savedPackages);
-  await syncSheet('Transactions', transactions);
-  await syncSheet('Albums', albums);
-  await syncSheet('Videos', videos);
-  showToast('✅ Google Sheets sync সম্পন্ন!');
+  showToast('🔄 Syncing to Google Sheets...');
+  try {
+    await Promise.all([
+      syncSheet('Bookings', bookings),
+      syncSheet('Packages', savedPackages),
+      syncSheet('Transactions', transactions),
+      syncSheet('Albums', albums),
+      syncSheet('Videos', videos)
+    ]);
+    showToast('✅ Google Sheets sync সম্পন্ন! (data পাঠানো হয়েছে)');
+  } catch(e){
+    showToast('⚠ Sync error — Apps Script URL check করো');
+    console.warn('SyncAll error:', e);
+  }
 }
 
 async function loadFromSheets(){
@@ -1480,15 +1585,26 @@ async function loadFromSheets(){
       sheetsGet('Bookings'), sheetsGet('Packages'),
       sheetsGet('Transactions'), sheetsGet('Albums'), sheetsGet('Videos')
     ]);
-    if(bks && Array.isArray(bks) && bks.length) bookings = bks.map(b=>({...b, facilities: tryParse(b.facilities)}));
-    if(pkgs && Array.isArray(pkgs) && pkgs.length) savedPackages = pkgs.map(p=>({...p, facilities: tryParse(p.facilities)}));
-    if(txns && Array.isArray(txns) && txns.length) transactions = txns;
-    if(albs && Array.isArray(albs) && albs.length) albums = albs.map(a=>({...a, icons: tryParse(a.icons)}));
-    if(vids && Array.isArray(vids) && vids.length) videos = vids;
-    saveToStorage();
-    showToast('✅ Google Sheets থেকে data লোড হয়েছে!');
-    return true;
-  } catch(e){ showToast('⚠ Sheets load failed'); return false; }
+    let loaded = false;
+    if(bks && Array.isArray(bks) && bks.length){
+      bookings = bks.map(b=>({...b, date: normalizeDate(b.date), dateEnd: normalizeDate(b.dateEnd), pkgIds: tryParse(b.pkgIds)||[], facilities: tryParse(b.facilities)}));
+      loaded = true;
+    }
+    if(pkgs && Array.isArray(pkgs) && pkgs.length){
+      savedPackages = pkgs.map(p=>({...p, facilities: tryParse(p.facilities)}));
+      loaded = true;
+    }
+    if(txns && Array.isArray(txns) && txns.length){ transactions = txns; loaded = true; }
+    if(albs && Array.isArray(albs) && albs.length){ albums = albs.map(a=>({...a, icons: tryParse(a.icons)})); loaded = true; }
+    if(vids && Array.isArray(vids) && vids.length){ videos = vids; loaded = true; }
+    if(loaded){ saveToStorage(); showToast('✅ Google Sheets থেকে data লোড হয়েছে!'); }
+    else { showToast('⚠ Sheets এ কোনো data পাওয়া যায়নি — local data ব্যবহার হচ্ছে'); }
+    return loaded;
+  } catch(e){
+    console.warn('Sheets load error:', e);
+    showToast('⚠ Sheets load failed — local data ব্যবহার হচ্ছে');
+    return false;
+  }
 }
 
 function tryParse(val){
@@ -1504,6 +1620,9 @@ function saveToStorage(){
     localStorage.setItem('aamantran_transactions', JSON.stringify(transactions));
     localStorage.setItem('aamantran_albums', JSON.stringify(albums));
     localStorage.setItem('aamantran_videos', JSON.stringify(videos));
+    // Save gallery (store only metadata, not base64 to avoid quota)
+    const galleryMeta = galleryItems.map(g=>({caption:g.caption,cat:g.cat,icon:g.icon,src:g.src&&g.src.length<500000?g.src:null}));
+    localStorage.setItem('aamantran_gallery', JSON.stringify(galleryMeta));
   } catch(e){ console.warn('Storage error:', e); }
 }
 
@@ -1519,6 +1638,12 @@ function loadFromStorage(){
     if(albs) albums = JSON.parse(albs);
     const vids = localStorage.getItem('aamantran_videos');
     if(vids) videos = JSON.parse(vids);
+    const gals = localStorage.getItem('aamantran_gallery');
+    if(gals){
+      const saved=JSON.parse(gals);
+      // Merge saved gallery with defaults (avoid duplicates)
+      saved.forEach(g=>{ if(!galleryItems.find(x=>x.caption===g.caption)) galleryItems.unshift(g); });
+    }
     // Load master facilities (merge with defaults)
     const mf = localStorage.getItem('aamantran_master_facilities');
     if(mf){
@@ -1629,6 +1754,7 @@ document.getElementById('bk-date').value=today();
 renderQuickFac(); updatePkgPreview();
 renderSavedPackages();
 renderBookings();
+renderCalendar();
 renderAccounts();
 renderVideos();
 renderAlbums();
