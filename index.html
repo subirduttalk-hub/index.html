@@ -1259,6 +1259,7 @@ function addBooking(){
   const multiMode=document.querySelector('input[name="date-type"]:checked')?.value==='multi';
   const dateEnd=multiMode?document.getElementById('bk-date-end').value:'';
   if(!name||!date){showToast('Name এবং Date আবশ্যক');return;}
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){showToast('সঠিক Date দিন');return;}
   if(multiMode&&dateEnd&&dateEnd<date){showToast('End date, start date এর আগে হতে পারবে না');return;}
   // Check if date already booked
   if(bookings.some(b=>b.date===date)){showToast('⚠ এই তারিখটি ইতিমধ্যে বুক করা আছে!');return;}
@@ -1276,7 +1277,8 @@ function addBooking(){
   renderBookings(); saveToStorage();
   renderCalendar();
   syncSheet('Bookings', bookings); syncSheet('Transactions', transactions);
-  sendConfirmationEmail(booking, pkg);
+  const selectedPkg=savedPackages.find(p=>selectedBookingPkgIds.includes(p.id));
+  sendConfirmationEmail(booking, selectedPkg);
   showToast('✔ Booking confirmed for '+name+'! Sending email...');
   ['bk-name','bk-phone','bk-email','bk-date','bk-date-end','bk-guests','bk-advance','bk-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   selectedBookingPkgIds=[];
@@ -1443,11 +1445,14 @@ function renderCalendar(){
   // Booked dates this month
   // Build set of all booked dates (including ranges)
   const bookedDates=new Set();
-  bookings.filter(b=>b.date).forEach(b=>{
+  bookings.filter(b=>b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)).forEach(b=>{
     const start=new Date(b.date+'T00:00:00');
-    const end=b.dateEnd?new Date(b.dateEnd+'T00:00:00'):start;
+    const endStr=(b.dateEnd&&b.dateEnd!==b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.dateEnd))?b.dateEnd:b.date;
+    const end=new Date(endStr+'T00:00:00');
     for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-      bookedDates.add(d.toISOString().split('T')[0]);
+      // Use local date parts to avoid UTC shift
+      const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      bookedDates.add(ds);
     }
   });
   // Empty cells
@@ -1474,7 +1479,13 @@ function renderCalendar(){
     </div>`).join('');
 }
 
-function getBookingForDate(ds){ return bookings.find(b=>{ const s=new Date(b.date+'T00:00:00'); const e=b.dateEnd?new Date(b.dateEnd+'T00:00:00'):s; const t=new Date(ds+'T00:00:00'); return t>=s&&t<=e; }); }
+function getBookingForDate(ds){
+  return bookings.find(b=>{
+    if(!b.date||!/^\d{4}-\d{2}-\d{2}$/.test(b.date)) return false;
+    const endStr=(b.dateEnd&&b.dateEnd!==b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.dateEnd))?b.dateEnd:b.date;
+    return ds>=b.date && ds<=endStr;
+  });
+}
 
 // ── EMAIL + WHATSAPP CONFIRMATION ────────────
 function sendConfirmationEmail(booking, pkg){
@@ -1513,9 +1524,13 @@ function sendConfirmationEmail(booking, pkg){
     `আপনার অনুষ্ঠানকে সুন্দর করতে আমরা সর্বদা প্রস্তুত। 🙏\n`+
     `— *আমন্ত্রণ Banquet*`;
 
-  const phone = (booking.phone||'').replace(/\D/g,'');
-  const waLink = phone
-    ? 'https://wa.me/91'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(waMsg)
+  const rawPhone = String(booking.phone||'').replace(/\D/g,'');
+  // Remove leading 91 or 0 if already present
+  const phone = rawPhone.startsWith('91') && rawPhone.length===12 ? rawPhone.slice(2)
+              : rawPhone.startsWith('0') ? rawPhone.slice(1)
+              : rawPhone;
+  const waLink = phone && phone.length>=10
+    ? 'https://wa.me/91'+phone+'?text='+encodeURIComponent(waMsg)
     : 'https://wa.me/?text='+encodeURIComponent(waMsg);
 
   showConfirmPanel(booking, mailtoLink, waLink, adminEmail);
@@ -1560,19 +1575,26 @@ function today(){
 // Sheet থেকে আসা date normalize করো (UTC ISO → local YYYY-MM-DD)
 function normalizeDate(d){
   if(!d) return '';
-  if(typeof d === 'string'){
-    // Already YYYY-MM-DD format
-    if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
-    // ISO format with time: 2026-04-25T18:30:00.000Z → local date
-    if(d.includes('T')){
-      const dt = new Date(d);
-      return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
-    }
+  // Already YYYY-MM-DD
+  if(typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // Date object (from Sheets)
+  if(d instanceof Date || (typeof d === 'object' && d !== null)){
+    const dt = new Date(d);
+    if(isNaN(dt.getTime())) return '';
+    return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
   }
-  if(d instanceof Date){
-    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  // ISO string with T
+  if(typeof d === 'string' && d.includes('T')){
+    // Parse as local — take only date part directly
+    return d.split('T')[0];
   }
-  return String(d).split('T')[0];
+  // Numeric (Excel serial date from Sheets)
+  if(typeof d === 'number'){
+    const dt = new Date((d - 25569) * 86400 * 1000);
+    return dt.getUTCFullYear()+'-'+String(dt.getUTCMonth()+1).padStart(2,'0')+'-'+String(dt.getUTCDate()).padStart(2,'0');
+  }
+  const str = String(d).split('T')[0];
+  return /^\d{4}-\d{2}-\d{2}$/.test(str) ? str : '';
 }
 function formatDate(d){
   if(!d)return'—';
