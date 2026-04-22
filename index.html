@@ -228,6 +228,44 @@
 
   .toast { position:fixed; bottom:24px; right:24px; background:var(--deep); color:var(--gold); padding:13px 22px; font-size:0.78rem; letter-spacing:1px; z-index:2000; display:none; animation:slideInRight 0.3s ease; border-left:3px solid var(--gold); max-width:300px; }
 
+  /* ── REVIEWS ── */
+  .reviews-wrap { max-width:900px; margin:0 auto; padding:40px 24px; }
+  .review-form { background:var(--white); border:1px solid #e8e0ce; padding:26px; margin-bottom:30px; }
+  .review-form h3 { font-family:'Cinzel',serif; font-size:0.8rem; letter-spacing:2px; color:var(--mid); margin-bottom:16px; }
+  .star-select { display:flex; gap:6px; margin-bottom:14px; }
+  .star-btn { font-size:1.6rem; cursor:pointer; opacity:0.3; transition:opacity 0.2s; background:none; border:none; padding:0; }
+  .star-btn.active { opacity:1; }
+  .review-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+  .review-card { background:var(--white); border:1px solid #e8e0ce; padding:20px; position:relative; }
+  .review-stars { color:#f5a623; font-size:1.1rem; margin-bottom:8px; }
+  .review-text { font-size:0.85rem; color:#555; line-height:1.6; margin-bottom:10px; }
+  .review-author { font-family:'Cinzel',serif; font-size:0.7rem; color:var(--mid); letter-spacing:1px; }
+  .review-date { font-size:0.65rem; color:#bbb; margin-top:3px; }
+  .review-delete { position:absolute; top:10px; right:10px; background:none; border:none; color:#e57373; cursor:pointer; font-size:0.8rem; }
+  .avg-rating { display:flex; align-items:center; gap:14px; background:var(--gold-pale); padding:16px 22px; margin-bottom:24px; border:1px solid rgba(201,168,76,0.3); }
+  .avg-num { font-family:'Cinzel',serif; font-size:2.2rem; color:var(--gold); }
+  .avg-stars { font-size:1.3rem; color:#f5a623; }
+  .avg-count { font-size:0.78rem; color:#999; }
+  /* ── DECORATION ── */
+  .deco-wrap { max-width:1100px; margin:0 auto; padding:40px 24px; }
+  .deco-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:30px; }
+  @media(max-width:700px){ .deco-grid { grid-template-columns:1fr; } }
+  .deco-panel { background:var(--white); border:1px solid #e8e0ce; padding:22px; }
+  .deco-panel h3 { font-family:'Cinzel',serif; font-size:0.8rem; letter-spacing:2px; color:var(--mid); margin-bottom:16px; }
+  .deco-item-row { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid #f5f0e8; }
+  .deco-item-name { flex:1; font-size:0.85rem; }
+  .deco-item-rent { font-size:0.8rem; color:var(--gold); font-weight:600; }
+  .deco-bill-row { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
+  .deco-bill-row select { flex:2; padding:8px; border:1px solid #e0d4b8; font-size:0.82rem; }
+  .deco-bill-row input[type=number] { flex:1; padding:8px; border:1px solid #e0d4b8; font-size:0.82rem; width:60px; }
+  .bill-preview { background:#fffdf7; border:1px solid rgba(201,168,76,0.3); padding:20px; margin-top:16px; }
+  .bill-preview h4 { font-family:'Cinzel',serif; font-size:0.85rem; letter-spacing:2px; color:var(--mid); margin-bottom:14px; text-align:center; }
+  .bill-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  .bill-table th { background:var(--dark); color:var(--gold); padding:8px 10px; text-align:left; font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:1px; }
+  .bill-table td { padding:8px 10px; border-bottom:1px solid #f0ebe0; }
+  .bill-total { font-family:'Cinzel',serif; font-size:1rem; color:var(--gold); text-align:right; margin-top:12px; padding-top:10px; border-top:2px solid var(--gold); }
+  .bill-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+
   /* SETTINGS PANEL */
   .settings-btn { position:fixed; bottom:24px; left:24px; z-index:1500; width:46px; height:46px; background:var(--dark); border:1px solid var(--gold); border-radius:50%; display:none; align-items:center; justify-content:center; cursor:pointer; font-size:1.2rem; transition:all 0.2s; box-shadow:0 4px 16px rgba(0,0,0,0.3); }
   .settings-btn:hover { background:var(--gold); }
@@ -302,6 +340,9 @@
   .pin-skip:hover { color:rgba(255,255,255,0.6); }
   .admin-badge { position:fixed; bottom:24px; left:80px; z-index:1500; background:var(--dark); border:1px solid rgba(201,168,76,0.3); padding:6px 14px; font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:1px; color:var(--gold); cursor:pointer; display:none; }
   .admin-badge:hover { border-color:var(--gold); }
+  .logout-btn { position:fixed; bottom:24px; left:80px; z-index:1500; background:#c0392b; border:none; padding:6px 14px; font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:1px; color:#fff; cursor:pointer; display:none; border-radius:2px; }
+  .logout-btn:hover { background:#e74c3c; }
+  .mode-label { position:fixed; bottom:52px; left:80px; z-index:1500; font-size:0.6rem; color:var(--gold); letter-spacing:1px; font-family:'Cinzel',serif; display:none; }
 
   @media(max-width:640px){
     .form-grid,.txn-grid,.vid-form-row,.pkg-mgr-grid { grid-template-columns:1fr; }
@@ -328,6 +369,8 @@
     <li><button onclick="showPage('gallery')" id="nav-gallery">Gallery</button></li>
     <li><button onclick="showPage('videos')" id="nav-videos">Videos</button></li>
     <li><button onclick="showPage('albums')" id="nav-albums">Albums</button></li>
+    <li><button onclick="showPage('reviews')" id="nav-reviews">Reviews</button></li>
+    <li><button onclick="showPage('decoration')" id="nav-decoration">Decoration</button></li>
   </ul>
 </nav>
 
@@ -680,6 +723,84 @@
   </div>
 </div>
 
+<!-- REVIEWS PAGE -->
+<div id="page-reviews" class="page">
+  <div class="section-hero">
+    <h2>CUSTOMER REVIEWS</h2>
+    <p>আমাদের অনুষ্ঠান সম্পর্কে আপনার মতামত জানান</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="reviews-wrap">
+    <div id="avg-rating-bar"></div>
+    <div class="review-form" id="review-form-wrap">
+      <h3>YOUR REVIEW</h3>
+      <div class="field"><label>নাম</label><input id="rv-name" type="text" placeholder="আপনার নাম"></div>
+      <div class="field" style="margin-top:12px"><label>Event Type</label>
+        <select id="rv-type">
+          <option>Rice Ceremony</option><option>Birthday Celebration</option>
+          <option>Marriage Ceremony</option><option>Engagement Ceremony</option>
+          <option>Marriage Reception</option><option>Social Gathering</option><option>Corporate Meeting</option>
+        </select>
+      </div>
+      <div style="margin-top:12px"><label style="font-size:0.78rem;color:#888;display:block;margin-bottom:6px">Rating</label>
+        <div class="star-select" id="star-select">
+          <button class="star-btn" onclick="setRating(1)">★</button>
+          <button class="star-btn" onclick="setRating(2)">★</button>
+          <button class="star-btn" onclick="setRating(3)">★</button>
+          <button class="star-btn" onclick="setRating(4)">★</button>
+          <button class="star-btn" onclick="setRating(5)">★</button>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Review</label>
+        <textarea id="rv-text" placeholder="আপনার অভিজ্ঞতা লিখুন..." style="min-height:80px"></textarea>
+      </div>
+      <button class="btn-gold" style="margin-top:14px" onclick="submitReview()">SUBMIT REVIEW</button>
+    </div>
+    <div class="review-grid" id="review-grid"></div>
+  </div>
+</div>
+
+<!-- DECORATION PAGE -->
+<div id="page-decoration" class="page">
+  <div class="section-hero">
+    <h2>DECORATION ITEMS</h2>
+    <p>Item list manage করুন এবং bill তৈরি করুন</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="deco-wrap">
+    <div class="deco-grid">
+      <!-- Left: Item List -->
+      <div class="deco-panel" id="deco-item-panel">
+        <h3>ITEM LIST</h3>
+        <div class="form-grid" style="margin-bottom:14px">
+          <div class="field"><label>Item Name</label><input id="deco-name" type="text" placeholder="e.g. Flower Arch"></div>
+          <div class="field"><label>Rent per piece (₹)</label><input id="deco-rent" type="number" placeholder="e.g. 500"></div>
+        </div>
+        <button class="btn-gold" style="width:100%;margin-bottom:18px" onclick="addDecoItem()">+ ADD ITEM</button>
+        <div id="deco-item-list"></div>
+      </div>
+      <!-- Right: Bill Maker -->
+      <div class="deco-panel">
+        <h3>BILL MAKER</h3>
+        <div class="field" style="margin-bottom:12px"><label>Client Name</label><input id="deco-client" type="text" placeholder="Client এর নাম"></div>
+        <div class="field" style="margin-bottom:14px"><label>Event Date</label><input id="deco-date" type="date"></div>
+        <div id="deco-bill-rows"></div>
+        <button class="btn-outline" style="width:100%;margin-bottom:16px;font-size:0.75rem" onclick="addBillRow()">+ ADD ITEM TO BILL</button>
+        <div class="bill-preview" id="bill-preview" style="display:none">
+          <h4>🏛️ আমন্ত্রণ BANQUET<br>DECORATION BILL</h4>
+          <div id="bill-content"></div>
+          <div class="bill-total" id="bill-total"></div>
+          <div class="bill-actions">
+            <button class="btn-gold" onclick="saveBillAsTransaction()">💾 Save to Transactions</button>
+            <button class="btn-outline" onclick="sendBillWhatsApp()">📱 WhatsApp এ পাঠাও</button>
+          </div>
+        </div>
+        <button class="btn-gold" style="width:100%;margin-top:10px" onclick="generateBill()">GENERATE BILL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PIN OVERLAY -->
 <div class="pin-overlay" id="pin-overlay">
   <div class="pin-box">
@@ -711,8 +832,10 @@
   </div>
 </div>
 
-<!-- ADMIN BADGE (public mode এ দেখাবে) -->
-<button class="admin-badge" id="admin-badge" onclick="showPinOverlay()">🔐 Admin Login</button>
+<!-- ADMIN/MODE BADGE -->
+<button class="admin-badge" id="admin-badge" onclick="showPinOverlay()">🔐 Login</button>
+<div class="mode-label" id="mode-label"></div>
+<button class="logout-btn" id="logout-btn" onclick="doLogout()">⏻ Logout</button>
 
 <!-- SETTINGS BUTTON -->
 <div class="settings-btn" onclick="toggleSettings()" title="Design Settings">⚙️</div>
@@ -885,6 +1008,8 @@ function showPage(name) {
   if(name==='packages'){renderFacDropdown();renderFacList();updatePkgPreview();renderSavedPackages();if(!isAdmin)applyAccessMode();}
   if(name==='booking'){renderBookingPackages();renderBookings();}
   if(name==='calendar'){renderCalendar();}
+  if(name==='reviews'){renderReviews();}
+  if(name==='decoration'){renderDecorationItems();renderDecorationBill();}
   if(name==='accounts'){renderAccounts();}
   if(name==='gallery'){renderGallery();}
   if(name==='videos'){renderVideos();}
@@ -1390,8 +1515,8 @@ function sendConfirmationEmail(booking, pkg){
 
   const phone = (booking.phone||'').replace(/\D/g,'');
   const waLink = phone
-    ? `https://wa.me/91${phone}?text=${encodeURIComponent(waMsg)}`
-    : `https://wa.me/?text=${encodeURIComponent(waMsg)}`;
+    ? 'https://wa.me/91'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(waMsg)
+    : 'https://wa.me/?text='+encodeURIComponent(waMsg);
 
   showConfirmPanel(booking, mailtoLink, waLink, adminEmail);
 }
@@ -1568,7 +1693,9 @@ async function syncAll(){
       syncSheet('Packages', savedPackages),
       syncSheet('Transactions', transactions),
       syncSheet('Albums', albums),
-      syncSheet('Videos', videos)
+      syncSheet('Videos', videos),
+      syncSheet('Reviews', reviews),
+      syncSheet('DecoItems', decoItems)
     ]);
     showToast('✅ Google Sheets sync সম্পন্ন! (data পাঠানো হয়েছে)');
   } catch(e){
@@ -1581,9 +1708,10 @@ async function loadFromSheets(){
   if(!SHEETS_URL) return false;
   showToast('📥 Google Sheets থেকে data আনা হচ্ছে...');
   try {
-    const [bks, pkgs, txns, albs, vids] = await Promise.all([
+    const [bks, pkgs, txns, albs, vids, revs, deco] = await Promise.all([
       sheetsGet('Bookings'), sheetsGet('Packages'),
-      sheetsGet('Transactions'), sheetsGet('Albums'), sheetsGet('Videos')
+      sheetsGet('Transactions'), sheetsGet('Albums'), sheetsGet('Videos'),
+      sheetsGet('Reviews'), sheetsGet('DecoItems')
     ]);
     let loaded = false;
     if(bks && Array.isArray(bks) && bks.length){
@@ -1597,6 +1725,8 @@ async function loadFromSheets(){
     if(txns && Array.isArray(txns) && txns.length){ transactions = txns; loaded = true; }
     if(albs && Array.isArray(albs) && albs.length){ albums = albs.map(a=>({...a, icons: tryParse(a.icons)})); loaded = true; }
     if(vids && Array.isArray(vids) && vids.length){ videos = vids; loaded = true; }
+    if(revs && Array.isArray(revs) && revs.length){ reviews = revs; loaded = true; }
+    if(deco && Array.isArray(deco) && deco.length){ decoItems = deco; loaded = true; }
     if(loaded){ saveToStorage(); showToast('✅ Google Sheets থেকে data লোড হয়েছে!'); }
     else { showToast('⚠ Sheets এ কোনো data পাওয়া যায়নি — local data ব্যবহার হচ্ছে'); }
     return loaded;
@@ -1623,6 +1753,8 @@ function saveToStorage(){
     // Save gallery (store only metadata, not base64 to avoid quota)
     const galleryMeta = galleryItems.map(g=>({caption:g.caption,cat:g.cat,icon:g.icon,src:g.src&&g.src.length<500000?g.src:null}));
     localStorage.setItem('aamantran_gallery', JSON.stringify(galleryMeta));
+    localStorage.setItem('aamantran_reviews', JSON.stringify(reviews));
+    localStorage.setItem('aamantran_deco', JSON.stringify(decoItems));
   } catch(e){ console.warn('Storage error:', e); }
 }
 
@@ -1644,6 +1776,10 @@ function loadFromStorage(){
       // Merge saved gallery with defaults (avoid duplicates)
       saved.forEach(g=>{ if(!galleryItems.find(x=>x.caption===g.caption)) galleryItems.unshift(g); });
     }
+    const revs = localStorage.getItem('aamantran_reviews');
+    if(revs) reviews = JSON.parse(revs);
+    const deco = localStorage.getItem('aamantran_deco');
+    if(deco) decoItems = JSON.parse(deco);
     // Load master facilities (merge with defaults)
     const mf = localStorage.getItem('aamantran_master_facilities');
     if(mf){
@@ -1655,8 +1791,10 @@ function loadFromStorage(){
 
 // ── PIN & ACCESS SYSTEM ──────────────────────
 const ADMIN_PIN = '556675';
+const MANAGER_PIN = '223355';
 let pinBuffer = '';
 let isAdmin = false;
+let isManager = false;
 
 function pinPress(num){
   if(pinBuffer.length >= 6) return;
@@ -1679,17 +1817,29 @@ function updatePinDots(){
 
 function checkPin(){
   if(pinBuffer === ADMIN_PIN){
-    isAdmin = true;
+    isAdmin = true; isManager = false;
     document.getElementById('pin-overlay').style.display = 'none';
     document.getElementById('admin-badge').style.display = 'none';
+    document.getElementById('logout-btn').style.display = 'block';
+    document.getElementById('mode-label').style.display = 'block';
+    document.getElementById('mode-label').textContent = '👑 ADMIN';
     document.querySelector('.settings-btn').style.display = 'flex';
     applyAccessMode();
     showToast('✔ Admin mode activated!');
+  } else if(pinBuffer === MANAGER_PIN){
+    isManager = true; isAdmin = false;
+    document.getElementById('pin-overlay').style.display = 'none';
+    document.getElementById('admin-badge').style.display = 'none';
+    document.getElementById('logout-btn').style.display = 'block';
+    document.getElementById('mode-label').style.display = 'block';
+    document.getElementById('mode-label').textContent = '🛡 MANAGER';
+    document.querySelector('.settings-btn').style.display = 'none';
+    applyAccessMode();
+    showToast('✔ Manager mode activated!');
   } else {
     document.getElementById('pin-error').textContent = '❌ ভুল PIN — আবার চেষ্টা করো';
     pinBuffer = '';
     updatePinDots();
-    // Shake effect
     const box = document.querySelector('.pin-box');
     box.style.transform = 'translateX(-8px)';
     setTimeout(()=>box.style.transform='translateX(8px)',100);
@@ -1698,11 +1848,22 @@ function checkPin(){
 }
 
 function publicMode(){
-  isAdmin = false;
+  isAdmin = false; isManager = false;
   document.getElementById('pin-overlay').style.display = 'none';
   document.getElementById('admin-badge').style.display = 'block';
   document.querySelector('.settings-btn').style.display = 'none';
   applyAccessMode();
+}
+
+function doLogout(){
+  isAdmin = false; isManager = false;
+  document.getElementById('admin-badge').style.display = 'block';
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('mode-label').style.display = 'none';
+  document.querySelector('.settings-btn').style.display = 'none';
+  applyAccessMode();
+  showPage('home');
+  showToast('Logged out successfully!');
 }
 
 function showPinOverlay(){
@@ -1714,9 +1875,10 @@ function showPinOverlay(){
 
 function applyAccessMode(){
   const heroCta = document.getElementById('hero-cta');
-  if(heroCta) heroCta.style.display = isAdmin ? 'flex' : 'none';
+  if(heroCta) heroCta.style.display = (isAdmin||isManager) ? 'flex' : 'none';
 
   const adminOnlyNav = ['nav-calendar','nav-booking','nav-accounts'];
+  const managerNav   = ['nav-calendar','nav-booking','nav-decoration']; // manager sees these, NOT accounts
   const pkgEditor = document.getElementById('pkg-editor');
   const galleryUpload = document.getElementById('gallery-upload');
   const videoAddForm = document.getElementById('video-add-form');
@@ -1724,26 +1886,222 @@ function applyAccessMode(){
   const fileInput = document.getElementById('fileInput');
 
   if(isAdmin){
-    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    // Full access
+    [...adminOnlyNav,'nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
     if(pkgEditor) pkgEditor.style.display='block';
     if(galleryUpload) galleryUpload.style.display='block';
     if(videoAddForm) videoAddForm.style.display='block';
     if(albumCreateBtn) albumCreateBtn.style.display='flex';
     if(fileInput) fileInput.disabled=false;
-  } else {
-    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display='none'; });
+  } else if(isManager){
+    // Manager: calendar, booking, decoration — NO accounts
+    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display= id==='nav-accounts'?'none':''; });
+    ['nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
     if(pkgEditor) pkgEditor.style.display='none';
     if(galleryUpload) galleryUpload.style.display='none';
     if(videoAddForm) videoAddForm.style.display='none';
     if(albumCreateBtn) albumCreateBtn.style.display='none';
     if(fileInput) fileInput.disabled=true;
-    // If on hidden page go home
+    const hiddenPages=['accounts'];
+    const activePage=document.querySelector('.page.active');
+    if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
+  } else {
+    // Public
+    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display='none'; });
+    ['nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    if(pkgEditor) pkgEditor.style.display='none';
+    if(galleryUpload) galleryUpload.style.display='none';
+    if(videoAddForm) videoAddForm.style.display='none';
+    if(albumCreateBtn) albumCreateBtn.style.display='none';
+    if(fileInput) fileInput.disabled=true;
     const hiddenPages=['calendar','booking','accounts'];
     const activePage=document.querySelector('.page.active');
     if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
   }
-  // Re-render packages with correct buttons
   renderSavedPackages();
+}
+
+// ── WHATSAPP FIX ────────────────────────────
+function sendWhatsAppMsg(phone, msg){
+  const num = phone ? '91'+String(phone).replace(/\D/g,'') : '';
+  const url = num
+    ? 'https://wa.me/'+num+'?text='+encodeURIComponent(msg)
+    : 'https://wa.me/?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+// ── REVIEWS ─────────────────────────────────
+let reviews = [];
+let currentRating = 0;
+
+function setRating(n){
+  currentRating = n;
+  document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('active', i<n));
+}
+
+function submitReview(){
+  const name = document.getElementById('rv-name').value.trim();
+  const text = document.getElementById('rv-text').value.trim();
+  if(!name||!text||!currentRating){ showToast('নাম, rating ও review দিন'); return; }
+  const type = document.getElementById('rv-type').value;
+  reviews.unshift({id:Date.now(), name, type, text, rating:currentRating, date:today()});
+  saveToStorage(); syncSheet('Reviews', reviews);
+  document.getElementById('rv-name').value='';
+  document.getElementById('rv-text').value='';
+  setRating(0); currentRating=0;
+  renderReviews();
+  showToast('✔ Review জমা হয়েছে! ধন্যবাদ।');
+}
+
+function deleteReview(id){
+  reviews = reviews.filter(r=>r.id!==id);
+  saveToStorage(); syncSheet('Reviews', reviews); renderReviews();
+}
+
+function renderReviews(){
+  // Avg rating bar
+  const bar = document.getElementById('avg-rating-bar');
+  if(!bar) return;
+  if(reviews.length){
+    const avg = (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1);
+    const stars = '★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg));
+    bar.innerHTML=`<div class="avg-rating"><div class="avg-num">${avg}</div><div><div class="avg-stars">${stars}</div><div class="avg-count">${reviews.length} টি review</div></div></div>`;
+  } else {
+    bar.innerHTML='';
+  }
+  const grid = document.getElementById('review-grid');
+  if(!grid) return;
+  if(!reviews.length){ grid.innerHTML='<div class="no-data" style="grid-column:1/-1;padding:30px">এখনো কোনো review নেই।</div>'; return; }
+  grid.innerHTML = reviews.map(r=>`
+    <div class="review-card">
+      ${(isAdmin||isManager)?`<button class="review-delete" onclick="deleteReview(${r.id})">✕</button>`:''}
+      <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      <div class="review-text">"${r.text}"</div>
+      <div class="review-author">${r.name}</div>
+      <div class="review-date">${r.type} · ${formatDate(r.date)}</div>
+    </div>`).join('');
+}
+
+// ── DECORATION ───────────────────────────────
+let decoItems = [];
+let billRows = [];
+
+function addDecoItem(){
+  const name = document.getElementById('deco-name').value.trim();
+  const rent = Number(document.getElementById('deco-rent').value);
+  if(!name||!rent){ showToast('Item name ও rent দিন'); return; }
+  decoItems.push({id:Date.now(), name, rent});
+  document.getElementById('deco-name').value='';
+  document.getElementById('deco-rent').value='';
+  saveToStorage(); syncSheet('DecoItems', decoItems);
+  renderDecorationItems();
+  renderDecorationBill();
+  showToast('✔ Item যোগ হয়েছে!');
+}
+
+function deleteDecoItem(id){
+  decoItems = decoItems.filter(d=>d.id!==id);
+  saveToStorage(); syncSheet('DecoItems', decoItems); renderDecorationItems(); renderDecorationBill();
+}
+
+function renderDecorationItems(){
+  const el = document.getElementById('deco-item-list');
+  if(!el) return;
+  // Show/hide add panel for admin/manager only
+  const panel = document.getElementById('deco-item-panel');
+  if(panel){
+    const addBtn = panel.querySelector('.btn-gold');
+    const inputs = panel.querySelectorAll('input');
+    const canEdit = isAdmin||isManager;
+    if(addBtn) addBtn.style.display = canEdit?'':'none';
+    inputs.forEach(i=>i.disabled=!canEdit);
+  }
+  if(!decoItems.length){ el.innerHTML='<div class="no-data" style="padding:16px">কোনো item নেই।</div>'; return; }
+  el.innerHTML = decoItems.map(d=>`
+    <div class="deco-item-row">
+      <span class="deco-item-name">${d.name}</span>
+      <span class="deco-item-rent">₹${d.rent.toLocaleString('en-IN')}/piece</span>
+      ${(isAdmin||isManager)?`<button onclick="deleteDecoItem(${d.id})" style="background:none;border:none;color:#e57373;cursor:pointer;font-size:0.8rem">✕</button>`:''}
+    </div>`).join('');
+}
+
+function addBillRow(){
+  billRows.push({itemId:'', qty:1});
+  renderDecorationBill();
+}
+
+function removeBillRow(i){
+  billRows.splice(i,1);
+  renderDecorationBill();
+}
+
+function renderDecorationBill(){
+  const el = document.getElementById('deco-bill-rows');
+  if(!el) return;
+  if(!billRows.length){ el.innerHTML=''; return; }
+  el.innerHTML = billRows.map((row,i)=>`
+    <div class="deco-bill-row">
+      <select onchange="billRows[${i}].itemId=Number(this.value);document.getElementById('bill-preview').style.display='none'">
+        <option value="">-- Item select করুন --</option>
+        ${decoItems.map(d=>`<option value="${d.id}" ${row.itemId===d.id?'selected':''}>${d.name} (₹${d.rent}/pc)</option>`).join('')}
+      </select>
+      <input type="number" min="1" value="${row.qty}" onchange="billRows[${i}].qty=Number(this.value)||1" placeholder="Qty">
+      <button onclick="removeBillRow(${i})" style="background:none;border:none;color:#e57373;cursor:pointer;font-size:1rem">✕</button>
+    </div>`).join('');
+}
+
+function generateBill(){
+  const client = document.getElementById('deco-client').value.trim();
+  const date = document.getElementById('deco-date').value;
+  if(!client){ showToast('Client name দিন'); return; }
+  if(!billRows.length){ showToast('কমপক্ষে একটা item যোগ করুন'); return; }
+  const validRows = billRows.filter(r=>r.itemId);
+  if(!validRows.length){ showToast('Item select করুন'); return; }
+
+  let total = 0;
+  const rows = validRows.map(r=>{
+    const item = decoItems.find(d=>d.id===r.itemId);
+    if(!item) return null;
+    const amt = item.rent * r.qty;
+    total += amt;
+    return `<tr><td>${item.name}</td><td style="text-align:center">${r.qty}</td><td style="text-align:right">₹${item.rent.toLocaleString('en-IN')}</td><td style="text-align:right">₹${amt.toLocaleString('en-IN')}</td></tr>`;
+  }).filter(Boolean);
+
+  document.getElementById('bill-content').innerHTML=`
+    <p style="font-size:0.8rem;color:#888;margin-bottom:10px">Client: <strong>${client}</strong>${date?' · '+formatDate(date):''}</p>
+    <table class="bill-table">
+      <thead><tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Amount</th></tr></thead>
+      <tbody>${rows.join('')}</tbody>
+    </table>`;
+  document.getElementById('bill-total').textContent = 'Total: ₹'+total.toLocaleString('en-IN');
+  document.getElementById('bill-preview').style.display='block';
+  document.getElementById('bill-preview')._data = {client, date, rows:validRows, total};
+}
+
+function saveBillAsTransaction(){
+  const data = document.getElementById('bill-preview')._data;
+  if(!data){ showToast('আগে bill generate করুন'); return; }
+  const desc = 'Decoration — '+data.client+(data.date?' ('+formatDate(data.date)+')':'');
+  transactions.unshift({desc, amt:data.total, type:'income', date:data.date||today(), id:Date.now()});
+  saveToStorage(); syncSheet('Transactions', transactions);
+  renderAccounts();
+  showToast('✔ Transaction এ save হয়েছে!');
+}
+
+function sendBillWhatsApp(){
+  const data = document.getElementById('bill-preview')._data;
+  if(!data){ showToast('আগে bill generate করুন'); return; }
+  const validRows = data.rows.filter(r=>r.itemId);
+  let msg = '🏛️ *আমন্ত্রণ BANQUET*\nDECORATION BILL\n\n';
+  msg += 'Client: *'+data.client+'*\n';
+  if(data.date) msg += 'Date: '+formatDate(data.date)+'\n';
+  msg += '\n';
+  validRows.forEach(r=>{
+    const item = decoItems.find(d=>d.id===r.itemId);
+    if(item) msg += '• '+item.name+' × '+r.qty+' = ₹'+(item.rent*r.qty).toLocaleString('en-IN')+'\n';
+  });
+  msg += '\n*Total: ₹'+data.total.toLocaleString('en-IN')+'*';
+  sendWhatsAppMsg('', msg);
 }
 
 // ── INIT ────────────────────────────────────
@@ -1751,6 +2109,7 @@ loadFromStorage();
 document.getElementById('album-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.getElementById('txn-date').value=today();
 document.getElementById('bk-date').value=today();
+const decoDateEl=document.getElementById('deco-date'); if(decoDateEl) decoDateEl.value=today();
 renderQuickFac(); updatePkgPreview();
 renderSavedPackages();
 renderBookings();
@@ -1758,6 +2117,8 @@ renderCalendar();
 renderAccounts();
 renderVideos();
 renderAlbums();
+renderReviews();
+renderDecorationItems();
 // Auto-load from Sheets on startup if URL is set
 if(SHEETS_URL){ loadFromSheets().then(()=>{ renderSavedPackages(); renderBookings(); renderAccounts(); renderVideos(); renderAlbums(); }); }
 </script>
