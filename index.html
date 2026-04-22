@@ -1113,6 +1113,7 @@ function addBooking(){
   bookings.unshift(booking);
   if(advance)transactions.unshift({desc:'Advance — '+name+' ('+type+')',amt:Number(advance),type:'income',date,id:Date.now()});
   renderBookings(); saveToStorage();
+  renderCalendar();
   syncSheet('Bookings', bookings); syncSheet('Transactions', transactions);
   sendConfirmationEmail(booking, pkg);
   showToast('✔ Booking confirmed for '+name+'! Sending email...');
@@ -1528,7 +1529,7 @@ function loadFromStorage(){
 }
 
 // ── PIN & ACCESS SYSTEM ──────────────────────
-const ADMIN_PIN = '556558';
+const ADMIN_PIN = '556675';
 let pinBuffer = '';
 let isAdmin = false;
 
