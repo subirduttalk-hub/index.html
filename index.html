@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -35,6 +35,22 @@
   .nav-logo .logo-bengali { font-family: 'Noto Sans Bengali', sans-serif; font-size: 1rem; color: var(--gold-light); font-weight: 700; letter-spacing:1px; }
   .nav-logo .logo-banquet { font-size: 0.58rem; letter-spacing: 5px; color: #c0c0c0; text-transform: uppercase; font-weight: 400; margin-top:1px; }
   .nav-links { display: flex; gap: 20px; list-style: none; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:6px; z-index:1001; }
+  .hamburger span { display:block; width:22px; height:2px; background:var(--gold); transition:all 0.3s; border-radius:2px; }
+  .hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+  @media(max-width:768px){
+    .hamburger { display:flex; }
+    .nav-links { 
+      display:none; flex-direction:column; position:fixed; top:52px; left:0; right:0;
+      background:rgba(26,15,5,0.98); padding:16px 0; gap:0; z-index:998;
+      border-top:1px solid rgba(201,168,76,0.3); max-height:80vh; overflow-y:auto;
+    }
+    .nav-links.open { display:flex; }
+    .nav-links li { border-bottom:1px solid rgba(255,255,255,0.05); }
+    .nav-links button { width:100%; padding:13px 24px; text-align:left; font-size:0.8rem; }
+  }
   .nav-links button { background:none; border:none; color: rgba(255,255,255,0.7); font-size: 0.7rem; letter-spacing: 1.8px; text-decoration: none; text-transform: uppercase; font-weight: 500; transition: color 0.2s; cursor:pointer; font-family:'Raleway',sans-serif; padding:0; }
   .nav-links button:hover, .nav-links button.active { color: var(--gold); }
 
@@ -148,6 +164,7 @@
   .booking-item { background:var(--white); border-left:3px solid var(--gold); padding:15px 19px; margin-bottom:11px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
   .booking-info h4 { font-family:'Cinzel',serif; font-size:0.85rem; color:var(--dark); }
   .booking-info p { font-size:0.76rem; color:#888; margin-top:4px; }
+  .badge-cancelled { background:rgba(229,115,115,0.15); color:#e57373; border:1px solid #e57373; }
   .booking-badge { font-size:0.65rem; letter-spacing:1px; padding:4px 11px; text-transform:uppercase; }
   .badge-confirmed { background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; }
   .no-data { text-align:center; color:#bbb; padding:40px; font-family:'Cormorant Garamond',serif; font-size:1.1rem; }
@@ -228,6 +245,25 @@
 
   .toast { position:fixed; bottom:24px; right:24px; background:var(--deep); color:var(--gold); padding:13px 22px; font-size:0.78rem; letter-spacing:1px; z-index:2000; display:none; animation:slideInRight 0.3s ease; border-left:3px solid var(--gold); max-width:300px; }
 
+  /* ── SOCIAL ── */
+  .social-wrap { max-width:900px; margin:0 auto; padding:40px 24px; }
+  .social-address-card { display:flex; align-items:flex-start; gap:16px; background:var(--white); border:1px solid rgba(201,168,76,0.4); padding:22px 26px; margin-bottom:30px; border-left:4px solid var(--gold); }
+  .social-address-icon { font-size:1.8rem; }
+  .social-address-title { font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:2px; color:var(--mid); margin-bottom:6px; }
+  .social-address-text { font-size:0.88rem; color:#555; line-height:1.8; }
+  .social-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:30px; }
+  .social-card { background:var(--white); border:1px solid #e8e0ce; padding:22px 20px; text-align:center; cursor:pointer; transition:all 0.2s; text-decoration:none; display:block; position:relative; }
+  .social-card:hover { border-color:var(--gold); transform:translateY(-3px); box-shadow:0 6px 20px rgba(201,168,76,0.15); }
+  .social-card .sc-icon { font-size:2.2rem; margin-bottom:10px; }
+  .social-card .sc-name { font-family:'Cinzel',serif; font-size:0.72rem; letter-spacing:2px; color:var(--mid); margin-bottom:4px; }
+  .social-card .sc-label { font-size:0.78rem; color:#888; }
+  .social-card .sc-qr { margin-top:12px; }
+  .social-card .sc-delete { position:absolute; top:8px; right:8px; background:none; border:none; color:#e57373; cursor:pointer; font-size:0.75rem; }
+  .social-admin-panel { background:var(--white); border:1px solid #e8e0ce; padding:22px; }
+  .social-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .social-form-grid .full { grid-column:1/-1; }
+  @media(max-width:600px){ .social-form-grid { grid-template-columns:1fr; } }
+
   /* ── REVIEWS ── */
   .reviews-wrap { max-width:900px; margin:0 auto; padding:40px 24px; }
   .review-form { background:var(--white); border:1px solid #e8e0ce; padding:26px; margin-bottom:30px; }
@@ -300,7 +336,14 @@
   .cal-nav button:hover { background:var(--gold); color:var(--deep); }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   .cal-day-name { text-align:center; font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:1px; color:var(--mid); padding:8px 0; }
-  .cal-cell { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid transparent; cursor:default; position:relative; min-height:48px; background:var(--white); transition:all 0.2s; }
+  .cal-cell { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid transparent; cursor:default; position:relative; min-height:54px; background:var(--white); transition:all 0.2s; }
+  .cal-bn { font-size:0.52rem; color:#999; margin-top:1px; line-height:1; }
+  .cal-cell.cal-shubho-biye { background:linear-gradient(135deg,#fff5f8,#ffe0ea); border-color:#e91e8c; }
+  .cal-cell.cal-shubho-anna { background:linear-gradient(135deg,#f0fff4,#d4edda); border-color:#27ae60; }
+  .cal-cell.cal-shubho-biye .cal-num { color:#c0165a; }
+  .cal-cell.cal-shubho-anna .cal-num { color:#1a7a40; }
+  .shubho-legend { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; font-size:0.72rem; }
+  .shubho-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:middle; }
   .cal-cell:hover:not(.cal-empty):not(.cal-booked) { border-color:var(--gold); }
   .cal-cell.cal-empty { background:transparent; border:none; }
   .cal-cell.cal-today { border-color:var(--gold); background:var(--gold-pale); }
@@ -360,15 +403,16 @@
     <span class="logo-bengali">আমন্ত্রণ</span>
     <span class="logo-banquet">Banquet</span>
   </a>
-  <ul class="nav-links">
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><button onclick="showPage('home')" class="active" id="nav-home">Home</button></li>
     <li><button onclick="showPage('calendar')" id="nav-calendar">Calendar</button></li>
     <li><button onclick="showPage('packages')" id="nav-packages">Packages</button></li>
     <li><button onclick="showPage('booking')" id="nav-booking">Booking</button></li>
     <li><button onclick="showPage('accounts')" id="nav-accounts">Accounts</button></li>
-    <li><button onclick="showPage('gallery')" id="nav-gallery">Gallery</button></li>
-    <li><button onclick="showPage('videos')" id="nav-videos">Videos</button></li>
-    <li><button onclick="showPage('albums')" id="nav-albums">Albums</button></li>
+    <li><button onclick="showPage('social')" id="nav-social">Connect</button></li>
     <li><button onclick="showPage('reviews')" id="nav-reviews">Reviews</button></li>
     <li><button onclick="showPage('decoration')" id="nav-decoration">Decoration</button></li>
   </ul>
@@ -379,27 +423,27 @@
   <div class="hero">
     <div class="hero-ornament" style="line-height:1;display:flex;flex-direction:column;align-items:center;gap:0;">আমন্ত্রণ<span style="font-family:'Cinzel',serif;font-size:1.8rem;color:#c0c0c0;letter-spacing:18px;font-weight:400;margin-top:8px;">BANQUET</span></div>
 
-    <h1>Where Every<br><em>Celebration</em> Begins</h1>
-    <p class="hero-sub">Rice Ceremony · Birthday · Marriage · Engagement · Reception · Social Gathering · Corporate Meetings</p>
+    <h1>প্রতিটি উৎসবের<br><em>শুভ সূচনা</em> এখানেই</h1>
+    <p class="hero-sub">অন্নপ্রাশন · জন্মদিন · বিবাহ · এনগেজমেন্ট · রিসেপশন · সামাজিক অনুষ্ঠান · কর্পোরেট মিটিং</p>
     <div class="hero-divider"></div>
     <div class="hero-cta" id="hero-cta">
-      <button class="btn-gold" id="hero-book-btn" onclick="isAdmin?showPage('booking'):showPage('packages')">View Packages</button>
-      <button class="btn-outline" onclick="showPage('gallery')">View Gallery</button>
+      <button class="btn-gold" id="hero-book-btn" onclick="isAdmin||isManager?showPage('booking'):showPage('packages')">প্যাকেজ দেখুন</button>
+      <button class="btn-outline" onclick="showPage('social')">আমাদের সাথে যোগাযোগ করুন</button>
     </div>
   </div>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-num">50+</div><div class="stat-lbl">Events Hosted</div></div>
-    <div class="stat"><div class="stat-num">1200</div><div class="stat-lbl">Guest Capacity</div></div>
-    <div class="stat"><div class="stat-num">2</div><div class="stat-lbl">Years of Excellence</div></div>
-    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-lbl">Guest Rating</div></div>
+    <div class="stat"><div class="stat-num">৫০+</div><div class="stat-lbl">অনুষ্ঠান সম্পন্ন</div></div>
+    <div class="stat"><div class="stat-num">১২০০</div><div class="stat-lbl">অতিথি ধারণক্ষমতা</div></div>
+    <div class="stat"><div class="stat-num">২</div><div class="stat-lbl">বছরের অভিজ্ঞতা</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-lbl">অতিথি রেটিং</div></div>
   </div>
 </div>
 
 <!-- CALENDAR -->
 <div id="page-calendar" class="page">
   <div class="section-hero">
-    <h2>BOOKING CALENDAR</h2>
-    <p>See which dates are available and already booked</p>
+    <h2>বুকিং ক্যালেন্ডার</h2>
+    <p>কোন তারিখ পাওয়া যাচ্ছে এবং কোনটি বুক হয়েছে দেখুন</p>
     <div class="gold-line"></div>
   </div>
   <div class="cal-wrap">
@@ -410,6 +454,7 @@
         <button onclick="changeMonth(1)">Next →</button>
       </div>
     </div>
+    <div id="cal-legend"></div>
     <div class="cal-grid" id="cal-grid"></div>
     <div class="cal-legend">
       <div class="cal-legend-item"><div class="cal-legend-box"></div> Available</div>
@@ -426,8 +471,8 @@
 <!-- PACKAGES -->
 <div id="page-packages" class="page">
   <div class="section-hero">
-    <h2>PACKAGE MANAGER</h2>
-    <p>🏛️ Category সেট করুন, facilities যোগ করুন, rate দিন</p>
+    <h2>আমাদের প্যাকেজসমূহ</h2>
+    <p>আপনার অনুষ্ঠানের জন্য উপযুক্ত প্যাকেজটি বেছে নিন</p>
     <div class="gold-line"></div>
   </div>
   <div class="pkg-mgr-wrap">
@@ -546,7 +591,7 @@
 <!-- BOOKING -->
 <div id="page-booking" class="page">
   <div class="section-hero">
-    <h2>BOOK YOUR EVENT</h2>
+    <h2>আপনার অনুষ্ঠান বুক করুন</h2>
     <p>Reserve your perfect venue for any occasion</p>
     <div class="gold-line"></div>
   </div>
@@ -634,100 +679,57 @@
 </div>
 
 <!-- GALLERY -->
-<div id="page-gallery" class="page">
+<!-- SOCIAL PAGE -->
+<div id="page-social" class="page">
   <div class="section-hero">
-    <h2>PHOTO GALLERY</h2>
-    <p>Moments captured at Aamantran</p>
+    <h2>আমাদের সাথে যুক্ত থাকুন</h2>
+    <p>আমাদের সোশ্যাল মিডিয়া ও যোগাযোগের মাধ্যমগুলিতে আমাদের অনুসরণ করুন</p>
     <div class="gold-line"></div>
   </div>
-  <div class="gallery-wrap">
-    <label class="upload-area" id="gallery-upload" for="fileInput">
-      <div class="upload-icon">📷</div>
-      <p>Click to upload photos · JPG, PNG, WEBP</p>
-    </label>
-    <input type="file" id="fileInput" multiple accept="image/*" onchange="handleImageUpload(event)">
-    <div style="margin-top:10px;display:flex;align-items:center;gap:10px;justify-content:center">
-      <label style="font-size:0.75rem;color:#888">Category:</label>
-      <select id="upload-cat" onchange="activeGalleryUploadCat=this.value" style="padding:6px 10px;border:1px solid #e0d4b8;font-size:0.78rem;background:#fffdf7">
-        <option value="Wedding">Wedding</option>
-        <option value="Rice Ceremony">Rice Ceremony</option>
-        <option value="Birthday">Birthday</option>
-        <option value="Engagement">Engagement</option>
-        <option value="Reception">Reception</option>
-        <option value="Corporate">Corporate</option>
-      </select>
-    </div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterGallery('all',this)">All</button>
-      <button class="filter-btn" onclick="filterGallery('Rice Ceremony',this)">Rice Ceremony</button>
-      <button class="filter-btn" onclick="filterGallery('Birthday Celebration',this)">Birthday</button>
-      <button class="filter-btn" onclick="filterGallery('Marriage Ceremony',this)">Marriage</button>
-      <button class="filter-btn" onclick="filterGallery('Engagement Ceremony',this)">Engagement</button>
-      <button class="filter-btn" onclick="filterGallery('Marriage Reception',this)">Reception</button>
-      <button class="filter-btn" onclick="filterGallery('Corporate Meeting',this)">Corporate</button>
-    </div>
-    <div class="gallery-grid" id="gallery-grid"></div>
-  </div>
-</div>
-
-<!-- VIDEOS -->
-<div id="page-videos" class="page">
-  <div class="section-hero">
-    <h2>VIDEO GALLERY</h2>
-    <p>Highlights and event reels</p>
-    <div class="gold-line"></div>
-  </div>
-  <div class="videos-wrap">
-    <div class="add-video-form" id="video-add-form">
-      <h3>ADD VIDEO</h3>
-      <div class="vid-form-row">
-        <div class="field"><label>Video Title</label><input id="vid-title" type="text" placeholder="e.g. Sharma Wedding Highlights"></div>
-        <div class="field"><label>Category</label><select id="vid-cat"><option>Rice Ceremony</option>
-          <option>Birthday Celebration</option><option>Marriage Ceremony</option><option>Engagement Ceremony</option><option>Marriage Reception</option><option>Social Gathering</option><option>Corporate Meeting</option></select></div>
-        <div class="field"><label>Duration</label><input id="vid-dur" type="text" placeholder="e.g. 3:42"></div>
-        <button class="btn-gold" style="height:44px;font-size:0.7rem" onclick="addVideo()">ADD</button>
+  <div class="social-wrap">
+    <!-- Address Card -->
+    <div class="social-address-card">
+      <div class="social-address-icon">📍</div>
+      <div>
+        <div class="social-address-title">আমাদের ঠিকানা</div>
+        <div class="social-address-text">আমন্ত্রণ Banquet<br>লক্ষ্মীসাগর, এস বি আই ব্যাংক কমপ্লেক্স<br>বাঁকুড়া, ৭২২১৬০, পশ্চিমবঙ্গ</div>
       </div>
     </div>
-    <div class="video-grid" id="video-grid"></div>
-  </div>
-</div>
 
-<!-- ALBUMS -->
-<div id="page-albums" class="page">
-  <div class="section-hero">
-    <h2>PHOTO ALBUMS</h2>
-    <p>Curated collections from every event</p>
-    <div class="gold-line"></div>
-  </div>
-  <div class="albums-wrap">
-    <div class="create-album-btn" id="album-create-btn" onclick="openAlbumModal()">
-      <span style="font-size:1.4rem">＋</span>
-      <span>CREATE NEW ALBUM</span>
+    <!-- Social Link Cards -->
+    <div class="social-grid" id="social-grid">
+      <!-- Rendered by JS -->
     </div>
-    <div class="albums-grid" id="albums-grid"></div>
-  </div>
-</div>
 
-<!-- Album Modal -->
-<div class="modal-overlay" id="album-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h3>CREATE ALBUM</h3>
-    <div class="field" style="margin-bottom:12px"><label>Album Name</label><input id="al-name" type="text" placeholder="e.g. Verma Wedding 2025"></div>
-    <div class="field" style="margin-bottom:12px"><label>Event Type</label>
-      <select id="al-type"><option>Rice Ceremony</option>
-          <option>Birthday Celebration</option><option>Marriage Ceremony</option><option>Engagement Ceremony</option><option>Marriage Reception</option><option>Social Gathering</option><option>Corporate Meeting</option></select>
+    <!-- Admin: Add/Edit Links -->
+    <div class="social-admin-panel" id="social-admin-panel" style="display:none">
+      <h3 style="font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:2px;color:var(--mid);margin-bottom:16px">লিঙ্ক যোগ / সম্পাদনা করুন</h3>
+      <div class="social-form-grid">
+        <div class="field"><label>Platform</label>
+          <select id="social-platform" onchange="updateSocialIcon()">
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+            <option value="YouTube">YouTube</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Google Drive">Google Drive</option>
+            <option value="Google Maps">Google Maps</option>
+            <option value="Website">Website</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Label (বাংলায় লিখুন)</label><input id="social-label" type="text" placeholder="যেমন: আমাদের Facebook পেজ"></div>
+        <div class="field full"><label>Link / URL</label><input id="social-url" type="url" placeholder="https://..."></div>
+      </div>
+      <button class="btn-gold" style="width:100%;margin-top:12px" onclick="addSocialLink()">+ যোগ করুন</button>
     </div>
-    <div class="field" style="margin-bottom:20px"><label>Date</label><input id="al-date" type="date"></div>
-    <button class="btn-gold" style="width:100%" onclick="createAlbum()">CREATE ALBUM</button>
   </div>
 </div>
 
 <!-- REVIEWS PAGE -->
 <div id="page-reviews" class="page">
   <div class="section-hero">
-    <h2>CUSTOMER REVIEWS</h2>
-    <p>আমাদের অনুষ্ঠান সম্পর্কে আপনার মতামত জানান</p>
+    <h2>অতিথিদের মতামত</h2>
+    <p>আপনার অনুষ্ঠান সম্পর্কে আপনার অভিজ্ঞতা আমাদের সাথে ভাগ করুন</p>
     <div class="gold-line"></div>
   </div>
   <div class="reviews-wrap">
@@ -763,8 +765,8 @@
 <!-- DECORATION PAGE -->
 <div id="page-decoration" class="page">
   <div class="section-hero">
-    <h2>DECORATION ITEMS</h2>
-    <p>Item list manage করুন এবং bill তৈরি করুন</p>
+    <h2>ডেকোরেশন আইটেম</h2>
+    <p>আইটেম তালিকা পরিচালনা করুন এবং বিল তৈরি করুন</p>
     <div class="gold-line"></div>
   </div>
   <div class="deco-wrap">
@@ -787,7 +789,13 @@
         <div id="deco-bill-rows"></div>
         <button class="btn-outline" style="width:100%;margin-bottom:16px;font-size:0.75rem" onclick="addBillRow()">+ ADD ITEM TO BILL</button>
         <div class="bill-preview" id="bill-preview" style="display:none">
-          <h4>🏛️ আমন্ত্রণ BANQUET<br>DECORATION BILL</h4>
+          <h4 style="text-align:center;font-family:'Cinzel',serif;font-size:0.9rem;letter-spacing:2px;color:var(--mid)">
+        🏛️ আমন্ত্রণ BANQUET<br>
+        <span style="font-size:0.7rem;font-family:'Raleway',sans-serif;color:#888;letter-spacing:1px;font-weight:400">
+          Lakshmisagar, S B I Bank Complex, Bankura, 722160, WB
+        </span><br>
+        DECORATION BILL
+      </h4>
           <div id="bill-content"></div>
           <div class="bill-total" id="bill-total"></div>
           <div class="bill-actions">
@@ -1001,6 +1009,7 @@ let activeFilter = 'all';
 
 // ── NAV ────────────────────────────────────
 function showPage(name) {
+  closeMobileNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(a=>a.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
@@ -1009,6 +1018,7 @@ function showPage(name) {
   if(name==='booking'){renderBookingPackages();renderBookings();}
   if(name==='calendar'){renderCalendar();}
   if(name==='reviews'){renderReviews();}
+  if(name==='social'){renderSocialLinks();}
   if(name==='decoration'){renderDecorationItems();renderDecorationBill();}
   if(name==='accounts'){renderAccounts();}
   if(name==='gallery'){renderGallery();}
@@ -1287,16 +1297,61 @@ function addBooking(){
   toggleDateType('single');
 }
 
+function cancelBooking(id){
+  const b=bookings.find(b=>b.id===id);
+  if(!b) return;
+  b.status=b.status==='Cancelled'?'Confirmed':'Cancelled';
+  renderBookings(); saveToStorage(); syncSheet('Bookings',bookings);
+  showToast(b.status==='Cancelled'?'Booking cancelled':'Booking restored');
+}
+
+function editBooking(id){
+  const b=bookings.find(b=>b.id===id);
+  if(!b) return;
+  // Fill booking form with existing data
+  showPage('booking');
+  setTimeout(()=>{
+    document.getElementById('bk-name').value=b.name||'';
+    document.getElementById('bk-phone').value=b.phone||'';
+    document.getElementById('bk-email').value=b.email||'';
+    document.getElementById('bk-date').value=normalizeDate(b.date)||'';
+    document.getElementById('bk-guests').value=b.guests||'';
+    document.getElementById('bk-advance').value=b.advance||'';
+    document.getElementById('bk-notes').value=b.notes||'';
+    const typeEl=document.getElementById('bk-type');
+    if(typeEl) Array.from(typeEl.options).forEach(o=>{ if(o.value===b.type) o.selected=true; });
+    // Handle multi-day
+    const endDate=normalizeDate(b.dateEnd);
+    if(endDate && endDate!==normalizeDate(b.date)){
+      document.querySelector('input[name="date-type"][value="multi"]').checked=true;
+      toggleDateType('multi');
+      document.getElementById('bk-date-end').value=endDate;
+    }
+    // Remove old booking
+    bookings=bookings.filter(x=>x.id!==id);
+    renderBookings(); saveToStorage();
+    showToast('Booking loaded — edit করে আবার Confirm করো');
+  },300);
+}
+
 function renderBookings(){
   const c=document.getElementById('bookings-container');
   if(!bookings.length){c.innerHTML='<div class="no-data">No bookings yet.</div>';return;}
   c.innerHTML=bookings.map(b=>`
-    <div class="booking-item">
+    <div class="booking-item" id="bk-${b.id}">
       <div class="booking-info">
         <h4>${b.name} — ${b.type}</h4>
         <p>${b.pkg?b.pkg+' Package':''} · ${b.guests||'?'} guests · ${b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' → '+formatDate(b.dateEnd):formatDate(b.date)}${b.advance?' · Advance: ₹'+Number(b.advance).toLocaleString('en-IN'):''}</p>
+        ${b.notes?'<p style="font-size:0.75rem;color:#999;margin-top:2px">📝 '+b.notes+'</p>':''}
       </div>
-      <span class="booking-badge badge-confirmed">✔ ${b.status}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <span class="booking-badge ${b.status==='Cancelled'?'badge-cancelled':'badge-confirmed'}">${b.status==='Cancelled'?'✕ Cancelled':'✔ Confirmed'}</span>
+        ${(isAdmin||isManager)?`<div style="display:flex;gap:6px">
+          <button onclick="editBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid var(--gold);color:var(--gold);cursor:pointer">✏ Edit</button>
+          <button onclick="cancelBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #e57373;color:#e57373;cursor:pointer">${b.status==='Cancelled'?'↩ Restore':'✕ Cancel'}</button>
+          <button onclick="printBookingById(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #555;color:#555;cursor:pointer">🖨 Print</button>
+        </div>`:''}
+      </div>
     </div>`).join('');
 }
 
@@ -1307,6 +1362,7 @@ function addTransaction(){
   const type=document.getElementById('txn-type').value;
   const date=document.getElementById('txn-date').value;
   if(!desc||!amt){showToast('Description ও Amount দিন');return;}
+  if(!date){showToast('Date দেওয়া আবশ্যক');return;}
   transactions.unshift({desc,amt,type,date:date||today(),id:Date.now()});
   renderAccounts(); saveToStorage(); syncSheet('Transactions', transactions); showToast('Transaction যোগ হয়েছে!');
   document.getElementById('txn-desc').value=''; document.getElementById('txn-amt').value='';
@@ -1424,7 +1480,23 @@ function renderAlbums(){
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_BN = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const DAYS_BN = ['রবি','সোম','মঙ্গল','বুধ','বৃহ','শুক্র','শনি'];
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function toggleMobileNav(){
+  const btn = document.getElementById('hamburger');
+  const links = document.getElementById('nav-links');
+  btn.classList.toggle('open');
+  links.classList.toggle('open');
+}
+
+function closeMobileNav(){
+  const btn = document.getElementById('hamburger');
+  const links = document.getElementById('nav-links');
+  if(btn) btn.classList.remove('open');
+  if(links) links.classList.remove('open');
+}
 
 function toggleDateType(type){
   const wrap=document.getElementById('end-date-wrap');
@@ -1432,25 +1504,126 @@ function toggleDateType(type){
   else { wrap.setAttribute('hidden',''); document.getElementById('bk-date-end').value=''; }
 }
 
+// বাংলা সংখ্যায় রূপান্তর
+function toBengaliNum(n){
+  return String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+}
+
+// বাংলা তিথি — approximate Bengali calendar date
+// Bengali year starts ~April 14-15
+function getBengaliDate(year, month, day){
+  // Simple approximation: Bengali date = Gregorian - ~593 years, offset by ~13-14 days
+  const gregorianDate = new Date(year, month, day);
+  // Bengali calendar months (approximate start dates in Gregorian)
+  const bnMonths = [
+    'বৈশাখ','জ্যৈষ্ঠ','আষাঢ়','শ্রাবণ',
+    'ভাদ্র','আশ্বিন','কার্তিক','অগ্রহায়ণ',
+    'পৌষ','মাঘ','ফাল্গুন','চৈত্র'
+  ];
+  // Approximate Bengali date (offset ~14 days, ~593 years)
+  const bnYear = year - 593 + (month >= 3 && !(month === 3 && day < 14) ? 1 : 0);
+  // Rough Bengali month calculation
+  const approxBnMonthStart = [
+    [0,14],[1,14],[2,14],[3,14],[4,14],[5,15],
+    [6,16],[7,16],[8,17],[9,17],[10,18],[11,14]
+  ];
+  // Find which Bengali month this Gregorian date falls in
+  let bnMonth = 0;
+  for(let i = 0; i < 12; i++){
+    const gm = approxBnMonthStart[i][0];
+    const gd = approxBnMonthStart[i][1];
+    const nm = approxBnMonthStart[(i+1)%12][0];
+    const nd = approxBnMonthStart[(i+1)%12][1];
+    const startG = new Date(year, gm, gd);
+    let endG;
+    if(i === 11) endG = new Date(year+1, nm, nd);
+    else endG = new Date(year, nm, nd);
+    if(gregorianDate >= startG && gregorianDate < endG){
+      bnMonth = i;
+      const bnDay = Math.floor((gregorianDate - startG) / (1000*60*60*24)) + 1;
+      return toBengaliNum(bnDay) + ' ' + bnMonths[bnMonth];
+    }
+  }
+  return '';
+}
+
+// পঞ্জিকা অনুযায়ী শুভ বিবাহের দিন ২০২৫-২০২৭
+const SHUBHO_BIYE = new Set([
+  // ২০২৫
+  '2025-01-16','2025-01-17','2025-01-19','2025-01-20','2025-01-23','2025-01-24','2025-01-26','2025-01-27','2025-01-30','2025-01-31',
+  '2025-02-02','2025-02-05','2025-02-06','2025-02-08','2025-02-09','2025-02-12','2025-02-13','2025-02-16','2025-02-19','2025-02-20',
+  '2025-02-23','2025-02-26','2025-02-27',
+  '2025-04-27','2025-04-28','2025-04-30',
+  '2025-05-01','2025-05-04','2025-05-07','2025-05-08','2025-05-11','2025-05-12','2025-05-14','2025-05-15','2025-05-18','2025-05-21',
+  '2025-05-22','2025-05-25','2025-05-28','2025-05-29',
+  '2025-06-01','2025-06-04','2025-06-05','2025-06-08','2025-06-11','2025-06-12','2025-06-15','2025-06-18',
+  '2025-11-02','2025-11-05','2025-11-06','2025-11-09','2025-11-12','2025-11-13','2025-11-16','2025-11-17','2025-11-20','2025-11-23',
+  '2025-11-24','2025-11-27','2025-11-28','2025-11-30',
+  '2025-12-01','2025-12-03','2025-12-04','2025-12-07','2025-12-10','2025-12-11','2025-12-14','2025-12-17','2025-12-18',
+  // ২০২৬
+  '2026-01-05','2026-01-06','2026-01-08','2026-01-11','2026-01-14','2026-01-15','2026-01-18','2026-01-21','2026-01-22','2026-01-25',
+  '2026-01-28','2026-01-29',
+  '2026-02-01','2026-02-04','2026-02-05','2026-02-08','2026-02-11','2026-02-12','2026-02-15','2026-02-18','2026-02-19','2026-02-22',
+  '2026-04-19','2026-04-22','2026-04-23','2026-04-26','2026-04-29','2026-04-30',
+  '2026-05-03','2026-05-06','2026-05-07','2026-05-10','2026-05-13','2026-05-14','2026-05-17','2026-05-20','2026-05-21','2026-05-24',
+  '2026-05-27','2026-05-28','2026-05-31',
+  '2026-06-03','2026-06-04','2026-06-07','2026-06-10','2026-06-11',
+  '2026-11-05','2026-11-08','2026-11-09','2026-11-12','2026-11-15','2026-11-16','2026-11-19','2026-11-22','2026-11-23','2026-11-26',
+  '2026-11-29','2026-11-30',
+  '2026-12-03','2026-12-06','2026-12-07','2026-12-10','2026-12-13','2026-12-14','2026-12-17','2026-12-20','2026-12-21',
+  // ২০২৭
+  '2027-01-03','2027-01-06','2027-01-07','2027-01-10','2027-01-13','2027-01-14','2027-01-17','2027-01-20','2027-01-21','2027-01-24',
+  '2027-01-27','2027-01-28','2027-01-31',
+  '2027-02-03','2027-02-04','2027-02-07','2027-02-10','2027-02-11','2027-02-14','2027-02-17','2027-02-18',
+]);
+
+// পঞ্জিকা অনুযায়ী শুভ অন্নপ্রাশনের দিন ২০২৫-২০২৭
+const SHUBHO_ANNA = new Set([
+  // ২০২৫
+  '2025-01-08','2025-01-13','2025-01-15','2025-01-22','2025-01-28','2025-01-29',
+  '2025-02-03','2025-02-10','2025-02-12','2025-02-17','2025-02-19','2025-02-24','2025-02-26',
+  '2025-03-03','2025-03-05','2025-03-10','2025-03-12','2025-03-17','2025-03-19','2025-03-24','2025-03-26','2025-03-31',
+  '2025-04-02','2025-04-07','2025-04-09','2025-04-14','2025-04-16','2025-04-21','2025-04-23','2025-04-28','2025-04-30',
+  '2025-05-05','2025-05-07','2025-05-12','2025-05-14','2025-05-19','2025-05-21','2025-05-26','2025-05-28',
+  '2025-06-02','2025-06-04','2025-06-09','2025-06-11','2025-06-16','2025-06-18','2025-06-23','2025-06-25','2025-06-30',
+  '2025-10-08','2025-10-13','2025-10-15','2025-10-20','2025-10-22','2025-10-27','2025-10-29',
+  '2025-11-03','2025-11-05','2025-11-10','2025-11-12','2025-11-17','2025-11-19','2025-11-24','2025-11-26',
+  '2025-12-01','2025-12-03','2025-12-08','2025-12-10','2025-12-15','2025-12-17','2025-12-22','2025-12-24','2025-12-29','2025-12-31',
+  // ২০২৬
+  '2026-01-05','2026-01-07','2026-01-12','2026-01-14','2026-01-19','2026-01-21','2026-01-26','2026-01-28',
+  '2026-02-02','2026-02-04','2026-02-09','2026-02-11','2026-02-16','2026-02-18','2026-02-23','2026-02-25',
+  '2026-03-02','2026-03-04','2026-03-09','2026-03-11','2026-03-16','2026-03-18','2026-03-23','2026-03-25','2026-03-30',
+  '2026-04-01','2026-04-06','2026-04-08','2026-04-13','2026-04-15','2026-04-20','2026-04-22','2026-04-27','2026-04-29',
+  '2026-05-04','2026-05-06','2026-05-11','2026-05-13','2026-05-18','2026-05-20','2026-05-25','2026-05-27',
+  '2026-06-01','2026-06-03','2026-06-08','2026-06-10','2026-06-15','2026-06-17',
+  '2026-10-07','2026-10-12','2026-10-14','2026-10-19','2026-10-21','2026-10-26','2026-10-28',
+  '2026-11-02','2026-11-04','2026-11-09','2026-11-11','2026-11-16','2026-11-18','2026-11-23','2026-11-25','2026-11-30',
+  '2026-12-02','2026-12-07','2026-12-09','2026-12-14','2026-12-16','2026-12-21','2026-12-23','2026-12-28','2026-12-30',
+  // ২০২৭
+  '2027-01-04','2027-01-06','2027-01-11','2027-01-13','2027-01-18','2027-01-20','2027-01-25','2027-01-27',
+  '2027-02-01','2027-02-03','2027-02-08','2027-02-10','2027-02-15','2027-02-17','2027-02-22','2027-02-24',
+]);
+
 function changeMonth(dir){ calMonth+=dir; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
 
 function renderCalendar(){
-  document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
+  document.getElementById('cal-month-label').textContent=MONTHS_BN[calMonth]+' ('+MONTHS[calMonth]+') '+calYear;
   const grid=document.getElementById('cal-grid');
-  // Day name headers
-  let html=DAYS.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  // Day name headers — Bengali + English
+  let html=DAYS.map((d,i)=>`<div class="cal-day-name">${DAYS_BN[i]}<br><span style="font-size:0.5rem;opacity:0.6">${d}</span></div>`).join('');
   const firstDay=new Date(calYear,calMonth,1).getDay();
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const todayStr=today();
   // Booked dates this month
   // Build set of all booked dates (including ranges)
   const bookedDates=new Set();
-  bookings.filter(b=>b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)).forEach(b=>{
-    const start=new Date(b.date+'T00:00:00');
-    const endStr=(b.dateEnd&&b.dateEnd!==b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.dateEnd))?b.dateEnd:b.date;
+  bookings.forEach(b=>{
+    const startStr=normalizeDate(b.date);
+    if(!startStr) return;
+    const endStr=normalizeDate(b.dateEnd)||startStr;
+    const start=new Date(startStr+'T00:00:00');
     const end=new Date(endStr+'T00:00:00');
     for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-      // Use local date parts to avoid UTC shift
       const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
       bookedDates.add(ds);
     }
@@ -1461,15 +1634,42 @@ function renderCalendar(){
     const ds=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
     const isBooked=bookedDates.has(ds);
     const isToday=ds===todayStr;
-    const cls=['cal-cell',isBooked?'cal-booked':'',isToday&&!isBooked?'cal-today':''].filter(Boolean).join(' ');
-    html+=`<div class="${cls}" title="${isBooked?getBookingForDate(ds)?.name+' – '+getBookingForDate(ds)?.type:'Available'}">
+    const isShubhoBiye=!isBooked&&SHUBHO_BIYE.has(ds);
+    const isShubhoAnna=!isBooked&&!isShubhoBiye&&SHUBHO_ANNA.has(ds);
+    const cls=['cal-cell',
+      isBooked?'cal-booked':'',
+      isToday&&!isBooked?'cal-today':'',
+      isShubhoBiye?'cal-shubho-biye':'',
+      isShubhoAnna?'cal-shubho-anna':''
+    ].filter(Boolean).join(' ');
+    const bnDate=getBengaliDate(calYear,calMonth,d);
+    const bookingInfo=isBooked?getBookingForDate(ds):null;
+    let titleText='';
+    if(isBooked) titleText=bookingInfo?.name+' – '+bookingInfo?.type;
+    else if(isShubhoBiye) titleText='শুভ বিবাহের দিন';
+    else if(isShubhoAnna) titleText='শুভ অন্নপ্রাশনের দিন';
+    else titleText='পাওয়া যাচ্ছে';
+    html+=`<div class="${cls}" title="${titleText}">
       <span class="cal-num">${d}</span>
+      <span class="cal-bn">${bnDate}</span>
       ${isBooked?'<span class="cal-dot"></span>':''}
+      ${isShubhoBiye?'<span style="font-size:0.55rem;color:#c0165a">💍</span>':''}
+      ${isShubhoAnna?'<span style="font-size:0.55rem;color:#1a7a40">🍚</span>':''}
     </div>`;
   }
   grid.innerHTML=html;
+  // Legend
+  const legendEl=document.getElementById('cal-legend');
+  if(legendEl) legendEl.innerHTML=`
+    <div class="shubho-legend">
+      <span><span class="shubho-dot" style="background:#2a1a0a;border:1px solid var(--gold)"></span>বুকড</span>
+      <span><span class="shubho-dot" style="background:#e91e8c"></span>শুভ বিবাহ 💍</span>
+      <span><span class="shubho-dot" style="background:#27ae60"></span>শুভ অন্নপ্রাশন 🍚</span>
+      <span><span class="shubho-dot" style="background:var(--gold-pale);border:1px solid var(--gold)"></span>আজকের দিন</span>
+    </div>`;
   // Booked list
-  const monthBookings=bookings.filter(b=>b.date&&b.date.startsWith(calYear+'-'+String(calMonth+1).padStart(2,'0'))).sort((a,b)=>a.date.localeCompare(b.date));
+  const calMonthStr=calYear+'-'+String(calMonth+1).padStart(2,'0');
+  const monthBookings=bookings.filter(b=>{ const nd=normalizeDate(b.date); return nd&&nd.startsWith(calMonthStr); }).sort((a,b)=>normalizeDate(a.date).localeCompare(normalizeDate(b.date)));
   const evDiv=document.getElementById('cal-booked-events');
   if(!monthBookings.length){ evDiv.innerHTML='<div class="no-data" style="padding:20px">This month has no bookings yet.</div>'; return; }
   evDiv.innerHTML=monthBookings.map(b=>`
@@ -1481,9 +1681,10 @@ function renderCalendar(){
 
 function getBookingForDate(ds){
   return bookings.find(b=>{
-    if(!b.date||!/^\d{4}-\d{2}-\d{2}$/.test(b.date)) return false;
-    const endStr=(b.dateEnd&&b.dateEnd!==b.date&&/^\d{4}-\d{2}-\d{2}$/.test(b.dateEnd))?b.dateEnd:b.date;
-    return ds>=b.date && ds<=endStr;
+    const s=normalizeDate(b.date);
+    if(!s) return false;
+    const e=normalizeDate(b.dateEnd)||s;
+    return ds>=s && ds<=e;
   });
 }
 
@@ -1536,6 +1737,59 @@ function sendConfirmationEmail(booking, pkg){
   showConfirmPanel(booking, mailtoLink, waLink, adminEmail);
 }
 
+function printBookingById(id){
+  const b = bookings.find(x=>x.id===id);
+  if(b) printBookingDetails(b);
+}
+
+function printBookingDetails(booking){
+  const w = window.open('','_blank','width=800,height=600');
+  const dateStr = booking.dateEnd && booking.dateEnd!==booking.date
+    ? formatDate(booking.date)+' → '+formatDate(booking.dateEnd)
+    : formatDate(booking.date);
+  w.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>Booking — ${booking.name}</title>
+    <style>
+      body{font-family:'Georgia',serif;max-width:700px;margin:40px auto;padding:30px;color:#1a0f05}
+      .header{text-align:center;border-bottom:2px solid #c9a84c;padding-bottom:20px;margin-bottom:24px}
+      .header h1{font-size:1.6rem;letter-spacing:4px;color:#c9a84c;margin:0}
+      .header p{font-size:0.8rem;letter-spacing:2px;color:#888;margin:4px 0 0}
+      .section{margin-bottom:20px}
+      .label{font-size:0.7rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:3px}
+      .value{font-size:1rem;color:#1a0f05;border-bottom:1px solid #e8e0ce;padding-bottom:6px}
+      .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+      .footer{text-align:center;margin-top:30px;padding-top:16px;border-top:1px solid #e8e0ce;font-size:0.75rem;color:#888}
+      .status{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 14px;border-radius:2px;font-size:0.75rem;letter-spacing:1px}
+      @media print{body{margin:0}}
+    </style>
+  </head><body>
+    <div class="header">
+      <h1>আমন্ত্রণ BANQUET</h1>
+      <p style="font-size:0.75rem;color:#888;margin:2px 0">Lakshmisagar, S B I Bank Complex, Bankura, 722160, WB</p>
+      <p>BOOKING CONFIRMATION</p>
+    </div>
+    <div class="grid">
+      <div class="section"><div class="label">Client Name</div><div class="value">${booking.name||'—'}</div></div>
+      <div class="section"><div class="label">Phone</div><div class="value">${booking.phone||'—'}</div></div>
+      <div class="section"><div class="label">Email</div><div class="value">${booking.email||'—'}</div></div>
+      <div class="section"><div class="label">Event Type</div><div class="value">${booking.type||'—'}</div></div>
+      <div class="section"><div class="label">Event Date</div><div class="value">${dateStr}</div></div>
+      <div class="section"><div class="label">Guests</div><div class="value">${booking.guests||'—'}</div></div>
+      <div class="section"><div class="label">Package</div><div class="value">${booking.pkg||'Custom'}</div></div>
+      <div class="section"><div class="label">Advance Paid</div><div class="value">${booking.advance?'₹'+Number(booking.advance).toLocaleString('en-IN'):'Not paid'}</div></div>
+    </div>
+    <div class="section"><div class="label">Special Notes</div><div class="value">${booking.notes||'None'}</div></div>
+    <div class="section"><div class="label">Status</div><div><span class="status">✔ ${booking.status||'Confirmed'}</span></div></div>
+    <div class="footer">
+      আমন্ত্রণ Banquet · Printed on ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}
+    </div>
+  </body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>w.print(), 500);
+}
+
 function showConfirmPanel(booking, mailtoLink, waLink, adminEmail){
   const old=document.getElementById('email-confirm-panel');
   if(old)old.remove();
@@ -1553,6 +1807,10 @@ function showConfirmPanel(booking, mailtoLink, waLink, adminEmail){
       style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;text-align:center;padding:11px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:2px;text-decoration:none;margin-bottom:8px;border-radius:2px">
       <span style="font-size:1.1rem">💬</span> WHATSAPP পাঠাও
     </a>
+    <button onclick="printBookingDetails(${JSON.stringify(booking).replace(/'/g,'&#39;')})"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--dark);color:var(--gold);border:1px solid var(--gold);padding:11px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:2px;cursor:pointer;margin-bottom:8px">
+      <span style="font-size:1rem">🖨️</span> PRINT / SAVE PDF
+    </button>
     <a href="${mailtoLink}"
       onclick="setTimeout(()=>{document.getElementById('email-confirm-panel').remove();showToast('✔ Email client খুলছে!');},400)"
       style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:var(--deep);text-align:center;padding:11px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:2px;text-decoration:none;margin-bottom:8px;border-radius:2px">
@@ -1714,9 +1972,8 @@ async function syncAll(){
       syncSheet('Bookings', bookings),
       syncSheet('Packages', savedPackages),
       syncSheet('Transactions', transactions),
-      syncSheet('Albums', albums),
-      syncSheet('Videos', videos),
       syncSheet('Reviews', reviews),
+      syncSheet('SocialLinks', socialLinks),
       syncSheet('DecoItems', decoItems)
     ]);
     showToast('✅ Google Sheets sync সম্পন্ন! (data পাঠানো হয়েছে)');
@@ -1730,10 +1987,10 @@ async function loadFromSheets(){
   if(!SHEETS_URL) return false;
   showToast('📥 Google Sheets থেকে data আনা হচ্ছে...');
   try {
-    const [bks, pkgs, txns, albs, vids, revs, deco] = await Promise.all([
+    const [bks, pkgs, txns, revs, deco, socs] = await Promise.all([
       sheetsGet('Bookings'), sheetsGet('Packages'),
-      sheetsGet('Transactions'), sheetsGet('Albums'), sheetsGet('Videos'),
-      sheetsGet('Reviews'), sheetsGet('DecoItems')
+      sheetsGet('Transactions'),
+      sheetsGet('Reviews'), sheetsGet('DecoItems'), sheetsGet('SocialLinks')
     ]);
     let loaded = false;
     if(bks && Array.isArray(bks) && bks.length){
@@ -1746,9 +2003,9 @@ async function loadFromSheets(){
     }
     if(txns && Array.isArray(txns) && txns.length){ transactions = txns; loaded = true; }
     if(albs && Array.isArray(albs) && albs.length){ albums = albs.map(a=>({...a, icons: tryParse(a.icons)})); loaded = true; }
-    if(vids && Array.isArray(vids) && vids.length){ videos = vids; loaded = true; }
     if(revs && Array.isArray(revs) && revs.length){ reviews = revs; loaded = true; }
     if(deco && Array.isArray(deco) && deco.length){ decoItems = deco; loaded = true; }
+    if(socs && Array.isArray(socs) && socs.length){ socialLinks = socs; loaded = true; }
     if(loaded){ saveToStorage(); showToast('✅ Google Sheets থেকে data লোড হয়েছে!'); }
     else { showToast('⚠ Sheets এ কোনো data পাওয়া যায়নি — local data ব্যবহার হচ্ছে'); }
     return loaded;
@@ -1777,6 +2034,7 @@ function saveToStorage(){
     localStorage.setItem('aamantran_gallery', JSON.stringify(galleryMeta));
     localStorage.setItem('aamantran_reviews', JSON.stringify(reviews));
     localStorage.setItem('aamantran_deco', JSON.stringify(decoItems));
+    localStorage.setItem('aamantran_social', JSON.stringify(socialLinks));
   } catch(e){ console.warn('Storage error:', e); }
 }
 
@@ -1785,7 +2043,7 @@ function loadFromStorage(){
     const pkgs = localStorage.getItem('aamantran_packages');
     if(pkgs) savedPackages = JSON.parse(pkgs);
     const bks = localStorage.getItem('aamantran_bookings');
-    if(bks) bookings = JSON.parse(bks);
+    if(bks){ bookings = JSON.parse(bks).map(b=>({...b, date:normalizeDate(b.date), dateEnd:normalizeDate(b.dateEnd||b.date)})); }
     const txns = localStorage.getItem('aamantran_transactions');
     if(txns) transactions = JSON.parse(txns);
     const albs = localStorage.getItem('aamantran_albums');
@@ -1802,6 +2060,8 @@ function loadFromStorage(){
     if(revs) reviews = JSON.parse(revs);
     const deco = localStorage.getItem('aamantran_deco');
     if(deco) decoItems = JSON.parse(deco);
+    const soc = localStorage.getItem('aamantran_social');
+    if(soc) socialLinks = JSON.parse(soc);
     // Load master facilities (merge with defaults)
     const mf = localStorage.getItem('aamantran_master_facilities');
     if(mf){
@@ -1909,33 +2169,21 @@ function applyAccessMode(){
 
   if(isAdmin){
     // Full access
-    [...adminOnlyNav,'nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    [...adminOnlyNav,'nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
     if(pkgEditor) pkgEditor.style.display='block';
-    if(galleryUpload) galleryUpload.style.display='block';
-    if(videoAddForm) videoAddForm.style.display='block';
-    if(albumCreateBtn) albumCreateBtn.style.display='flex';
-    if(fileInput) fileInput.disabled=false;
   } else if(isManager){
     // Manager: calendar, booking, decoration — NO accounts
     adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display= id==='nav-accounts'?'none':''; });
-    ['nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    ['nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
     if(pkgEditor) pkgEditor.style.display='none';
-    if(galleryUpload) galleryUpload.style.display='none';
-    if(videoAddForm) videoAddForm.style.display='none';
-    if(albumCreateBtn) albumCreateBtn.style.display='none';
-    if(fileInput) fileInput.disabled=true;
     const hiddenPages=['accounts'];
     const activePage=document.querySelector('.page.active');
     if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
   } else {
     // Public
     adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display='none'; });
-    ['nav-decoration','nav-reviews'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    ['nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
     if(pkgEditor) pkgEditor.style.display='none';
-    if(galleryUpload) galleryUpload.style.display='none';
-    if(videoAddForm) videoAddForm.style.display='none';
-    if(albumCreateBtn) albumCreateBtn.style.display='none';
-    if(fileInput) fileInput.disabled=true;
     const hiddenPages=['calendar','booking','accounts'];
     const activePage=document.querySelector('.page.active');
     if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
@@ -1950,6 +2198,64 @@ function sendWhatsAppMsg(phone, msg){
     ? 'https://wa.me/'+num+'?text='+encodeURIComponent(msg)
     : 'https://wa.me/?text='+encodeURIComponent(msg);
   window.open(url,'_blank');
+}
+
+// ── SOCIAL LINKS ────────────────────────────
+let socialLinks = [];
+
+const SOCIAL_ICONS = {
+  'Facebook': '📘', 'Instagram': '📸', 'YouTube': '▶️',
+  'WhatsApp': '💬', 'Google Drive': '📁', 'Google Maps': '🗺️',
+  'Website': '🌐', 'Other': '🔗'
+};
+
+function updateSocialIcon(){}
+
+function addSocialLink(){
+  const platform = document.getElementById('social-platform').value;
+  const label    = document.getElementById('social-label').value.trim();
+  const url      = document.getElementById('social-url').value.trim();
+  if(!url){ showToast('URL দিন'); return; }
+  socialLinks.push({ id:Date.now(), platform, label:label||platform, url });
+  document.getElementById('social-label').value = '';
+  document.getElementById('social-url').value   = '';
+  saveToStorage(); syncSheet('SocialLinks', socialLinks);
+  renderSocialLinks();
+  showToast('✔ লিঙ্ক যোগ হয়েছে!');
+}
+
+function deleteSocialLink(id){
+  socialLinks = socialLinks.filter(s=>s.id!==id);
+  saveToStorage(); syncSheet('SocialLinks', socialLinks);
+  renderSocialLinks();
+}
+
+function renderSocialLinks(){
+  // Show/hide admin panel
+  const panel = document.getElementById('social-admin-panel');
+  if(panel) panel.style.display = (isAdmin||isManager) ? 'block' : 'none';
+
+  const grid = document.getElementById('social-grid');
+  if(!grid) return;
+
+  if(!socialLinks.length){
+    grid.innerHTML = '<div class="no-data" style="grid-column:1/-1;padding:30px;text-align:center">এখনো কোনো লিঙ্ক যোগ করা হয়নি।</div>';
+    return;
+  }
+
+  grid.innerHTML = socialLinks.map(s => {
+    const icon = SOCIAL_ICONS[s.platform] || '🔗';
+    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data='+encodeURIComponent(s.url);
+    const deleteBtn = (isAdmin||isManager)
+      ? `<button class="sc-delete" onclick="event.preventDefault();deleteSocialLink(${s.id})">✕</button>` : '';
+    return `<a href="${s.url}" target="_blank" class="social-card">
+      ${deleteBtn}
+      <div class="sc-icon">${icon}</div>
+      <div class="sc-name">${s.platform}</div>
+      <div class="sc-label">${s.label}</div>
+      <div class="sc-qr"><img src="${qrUrl}" alt="QR" style="width:80px;height:80px;opacity:0.85"></div>
+    </a>`;
+  }).join('');
 }
 
 // ── REVIEWS ─────────────────────────────────
@@ -2137,9 +2443,8 @@ renderSavedPackages();
 renderBookings();
 renderCalendar();
 renderAccounts();
-renderVideos();
-renderAlbums();
 renderReviews();
+renderSocialLinks();
 renderDecorationItems();
 // Auto-load from Sheets on startup if URL is set
 if(SHEETS_URL){ loadFromSheets().then(()=>{ renderSavedPackages(); renderBookings(); renderAccounts(); renderVideos(); renderAlbums(); }); }
