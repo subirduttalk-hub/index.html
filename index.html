@@ -365,7 +365,11 @@
   .cal-event-info span { color:#999; font-size:0.74rem; }
 
   /* PIN SYSTEM */
-  .pin-overlay { position:fixed; inset:0; background:rgba(26,15,5,0.97); z-index:5000; display:flex; align-items:center; justify-content:center; }
+  .pin-overlay { position:fixed; inset:0; background:rgba(26,15,5,0.97); z-index:5000; display:none; align-items:center; justify-content:center; }
+  .data-loading { position:fixed; inset:0; background:rgba(26,15,5,0.85); z-index:4000; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+  .data-loading p { color:var(--gold); font-family:'Cinzel',serif; font-size:0.8rem; letter-spacing:2px; }
+  .loading-spinner { width:36px; height:36px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
   .pin-box { background:var(--dark); border:1px solid rgba(201,168,76,0.4); padding:40px 36px; text-align:center; max-width:320px; width:90%; }
   .pin-box h3 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:3px; color:var(--gold); margin-bottom:6px; }
   .pin-box p { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-bottom:24px; }
@@ -809,6 +813,12 @@
   </div>
 </div>
 
+<!-- DATA LOADING OVERLAY -->
+<div class="data-loading" id="data-loading">
+  <div class="loading-spinner"></div>
+  <p>DATA লোড হচ্ছে...</p>
+</div>
+
 <!-- PIN OVERLAY -->
 <div class="pin-overlay" id="pin-overlay">
   <div class="pin-box">
@@ -940,10 +950,55 @@
 
 <script>
 // ── STATE ──────────────────────────────────
-let savedPackages = [];
+let savedPackages = [
+  {id:1776720547172,name:"utsab lawn",rate:1999,rateType:"per event",persons:100,timeStart:"18:00",timeEnd:"23:00",facilities:["Utsab Lawn — Simple Lights","naked chair 60 pis ,table 5 pi"]},
+  {id:1776720794388,name:"utsab lawn silver",rate:2999,rateType:"per event",persons:100,timeStart:"18:00",timeEnd:"23:00",facilities:["Utsab Lawn — With Lightings","60pichair and 5 pis table covered","jharna on with lightings"]},
+  {id:1776721003974,name:"utsab lawn gold",rate:3999,rateType:"per event",persons:100,timeStart:"18:00",timeEnd:"23:00",facilities:["Utsab Lawn — With Lightings","60pichair and 5 pis table covered","jharna on with lightings","Small Kitchen"]},
+  {id:1776721116730,name:"utsab lawn platinum",rate:4999,rateType:"per event",persons:100,timeStart:"18:00",timeEnd:"23:00",facilities:["Utsab Lawn — With Lightings","60pichair and 5 pis table covered","jharna on with lightings","Small Kitchen","Hall (Ground Floor)"]},
+  {id:1776721919151,name:"Silver",rate:10000,rateType:"per event",persons:300,timeStart:"06:00",timeEnd:"18:00",facilities:["Stall Shade","I ❤️ Lakshmisagar Selfie (Without Fountain)","Ananda Lawn — Simple Lights","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr."]},
+  {id:1776722167203,name:"silver pro",rate:10999,rateType:"per event",persons:300,timeStart:"06:00",timeEnd:"18:00",facilities:["Stall Shade","I ❤️ Lakshmisagar Selfie (Without Fountain)","Ananda Lawn — Simple Lights","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","first dinning hall with 120 covered seat capacity"]},
+  {id:1776722451473,name:"silver pro plus",rate:11999,rateType:"per event",persons:300,timeStart:"06:00",timeEnd:"18:00",facilities:["Stall Shade","I ❤️ Lakshmisagar Selfie (Without Fountain)","Ananda Lawn — Simple Lights","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","first dinning hall with 120 covered seat capacity","Hall (Ground Floor)","Wash Room (Ground Floor — 2)"]},
+  {id:1776723112606,name:"gold pro plus",rate:19999,rateType:"per event",persons:300,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","first dinning hall with 120 covered seat capacity","Hall (Ground Floor)","Wash Room (Ground Floor — 2)","I ❤️ Lakshmisagar Selfie (With Fountain)","Ananda Lawn — With Lightings"]},
+  {id:1776723253456,name:"gold pro",rate:17999,rateType:"per event",persons:300,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Hall (Ground Floor)","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (Without Fountain)"]},
+  {id:1776723399126,name:"Gold",rate:15999,rateType:"per event",persons:300,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Hall (Ground Floor)","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (Without Fountain)"]},
+  {id:1776723574488,name:"Platinum",rate:24999,rateType:"per event",persons:500,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room"]},
+  {id:1776723741574,name:"Diamond",rate:29999,rateType:"per event",persons:600,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room","Small Kitchen"]},
+  {id:1776723875036,name:"diamond pro",rate:34999,rateType:"per event",persons:700,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room","Small Kitchen"]},
+  {id:1776724090202,name:"diamond pro plus",rate:39999,rateType:"per event",persons:700,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","First Dining Hall — Sitting Max 120 Chairs (Without Cover)","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room","Small Kitchen","Common Wash Room (1st Floor)","Hall 1 (1st Floor)","three bed room (ac) with sleeping for 17 persons"]},
+  {id:1776724222812,name:"diamond pro max",rate:49999,rateType:"per event",persons:899,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room","Small Kitchen","Common Wash Room (1st Floor)","Hall 1 (1st Floor)","three bed room (ac) with sleeping for 17 persons","first dinning hall with 120 covered seat capacity","Hall (Ground Floor)","Utsab Lawn — With Lightings"]}
+];
 let selectedBookingPkgIds = [];
-let bookings = [];
-let transactions = [];
+let bookings = [
+  {id:1777109871448,name:"Pabitra pan",phone:"+91 91265 13865",email:"",date:"2026-06-06",dateEnd:"2026-06-06",type:"Rice Ceremony",guests:400,advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776888446105,name:"subir",phone:"9434439553",email:"",date:"2026-06-26",dateEnd:"2026-06-26",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776887588408,name:"akash",phone:"9434439553",email:"",date:"2026-06-30",dateEnd:"2026-06-30",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776887527345,name:"akash",phone:"9434439553",email:"",date:"2026-05-29",dateEnd:"2026-05-29",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776887504532,name:"akash",phone:"9434439553",email:"",date:"2026-05-26",dateEnd:"2026-05-26",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853346636,name:"manas",phone:"9153164457",email:"",date:"2026-05-27",dateEnd:"2026-05-28",type:"Engagement Ceremony",guests:500,advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853128338,name:"ddd",phone:"9434439553",email:"",date:"2026-05-07",dateEnd:"2026-05-08",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853066362,name:"ddd",phone:"9434439553",email:"",date:"2026-04-29",dateEnd:"2026-05-01",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853009060,name:"ddd",phone:"9434439553",email:"",date:"2026-04-28",dateEnd:"2026-04-28",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776846137951,name:"pal",phone:"9434439553",email:"",date:"2026-04-24",dateEnd:"2026-04-24",type:"Rice Ceremony",guests:350,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776770052086,name:"DD",phone:"94348873902",email:"",date:"2026-04-23",dateEnd:"2026-04-23",type:"Social Gathering",guests:200,advance:0,notes:"N/A",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776719835782,name:"hhhhh",phone:"9434439553",email:"",date:"2026-04-21",dateEnd:"2026-04-21",type:"Rice Ceremony",guests:300,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776718909457,name:"fgfdg",phone:"",email:"",date:"2026-05-11",dateEnd:"2026-05-11",type:"Rice Ceremony",guests:"",advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776717713369,name:"amit",phone:"9434439553",email:"",date:"2026-05-13",dateEnd:"2026-05-13",type:"Rice Ceremony",guests:500,advance:500,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"}
+];
+let transactions = [
+  {id:1777109871448,desc:"Advance — Pabitra pan (Rice Ceremony)",amt:0,type:"income",date:"2026-06-06"},
+  {id:1776888446105,desc:"Advance — subir (Rice Ceremony)",amt:5000,type:"income",date:"2026-06-26"},
+  {id:1776887588408,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-06-30"},
+  {id:1776887527345,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-29"},
+  {id:1776887504532,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-26"},
+  {id:1776853128338,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-05-07"},
+  {id:1776853066362,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-29"},
+  {id:1776853009060,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-28"},
+  {id:1776846137951,desc:"Advance — pal (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-24"},
+  {id:1776794697626,desc:"fffff",amt:3000,type:"income",date:"2026-04-27"},
+  {id:1776770052086,desc:"Advance — DD (Social Gathering)",amt:0,type:"income",date:"2026-04-23"},
+  {id:1776719835782,desc:"Advance — hhhhh (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-21"},
+  {id:1776717713369,desc:"Advance — amit (Rice Ceremony)",amt:500,type:"income",date:"2026-05-13"}
+];
 let activeGalleryUploadCat = 'Wedding';
 let galleryItems = [
   {caption:'Grand Ballroom Setup',cat:'Marriage Ceremony',icon:'🌹'},
@@ -1021,9 +1076,6 @@ function showPage(name) {
   if(name==='social'){renderSocialLinks();}
   if(name==='decoration'){renderDecorationItems();renderDecorationBill();}
   if(name==='accounts'){renderAccounts();}
-  if(name==='gallery'){renderGallery();}
-  if(name==='videos'){renderVideos();}
-  if(name==='albums'){renderAlbums();}
   return false;
 }
 
@@ -1212,15 +1264,33 @@ function renderSavedPackages(){
       <div class="spk-rate">${p.rate?'₹'+p.rate.toLocaleString('en-IN'):'—'}</div>
       <div class="spk-type">
         ${p.rateType}${p.persons?' · <strong>'+p.persons+' জন</strong>':''}
-        ${p.timeStart?'<br>⏰ '+p.timeStart+' — '+p.timeEnd:''}
+        ${p.timeStart?'<br>⏰ '+normalizeTime(p.timeStart)+' — '+normalizeTime(p.timeEnd):''}
       </div>
       <div style="margin-top:12px;margin-bottom:4px">
         <div style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:1.5px;color:var(--mid);margin-bottom:6px">FACILITIES (${facs.length})</div>
         <div style="max-height:200px;overflow-y:auto;padding-right:4px">${facHTML}</div>
       </div>
+      <button onclick="sharePackageWhatsApp(${p.id})"
+        style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;width:100%;background:#25D366;color:#fff;border:none;padding:9px;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:1.5px;cursor:pointer;border-radius:2px">
+        <span style="font-size:1rem">💬</span> WhatsApp এ জানুন
+      </button>
       ${adminBtns}
     </div>`;
   }).join('');
+}
+
+function sharePackageWhatsApp(id){
+  const p = savedPackages.find(x=>x.id===id);
+  if(!p) return;
+  const rate = p.rate ? '₹'+Number(p.rate).toLocaleString('en-IN') : '—';
+  const msg = 'আমন্ত্রণ Banquet\n'
+    + '🏛️ ' + p.name + ' Package\n'
+    + '💰 ' + rate + ' (' + p.rateType + ')\n'
+    + (p.persons ? '👥 ' + p.persons + ' জন\n' : '')
+    + (p.timeStart ? '⏰ ' + p.timeStart + ' — ' + p.timeEnd + '\n' : '')
+    + '\nLakshmisagar, S B I Bank Complex, Bankura, 722160\n'
+    + 'আরও জানতে যোগাযোগ করুন।';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function resetPkgForm(){
@@ -1251,7 +1321,7 @@ function renderBookingPackages(){
       <span class="bpk-check">✔</span>
       <div class="bpk-name">${p.name} Package</div>
       <div class="bpk-rate">${p.rate?'₹'+p.rate.toLocaleString('en-IN'):'No rate'}</div>
-      <div class="bpk-type">${p.rateType}${p.persons?' · '+p.persons+' জন':''}${p.timeStart?'<br>⏰ '+p.timeStart+' — '+p.timeEnd:''}</div>
+      <div class="bpk-type">${p.rateType}${p.persons?' · '+p.persons+' জন':''}${p.timeStart?'<br>⏰ '+normalizeTime(p.timeStart)+' — '+normalizeTime(p.timeEnd):''}</div>
       <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f0ebe0;max-height:160px;overflow-y:auto">${facHTML}</div>
     </div>`;
   }).join('');
@@ -1297,12 +1367,33 @@ function addBooking(){
   toggleDateType('single');
 }
 
+function bookingWhatsApp(id){
+  const b = bookings.find(x=>x.id===id);
+  if(!b) return;
+  const dateStr = b.dateEnd && b.dateEnd!==b.date
+    ? formatDate(b.date)+' থেকে '+formatDate(b.dateEnd)
+    : formatDate(b.date);
+  const msg = 'নমস্কার '+b.name+' জি 🙏\n\n'
+    + 'আমন্ত্রণ Banquet এ আপনার বুকিং নিশ্চিত হয়েছে।\n\n'
+    + '📋 বিবরণ:\n'
+    + '• অনুষ্ঠান: '+b.type+'\n'
+    + '• তারিখ: '+dateStr+'\n'
+    + '• অতিথি সংখ্যা: '+(b.guests||'—')+'\n'
+    + (b.pkg&&b.pkg!=='Custom'?'• প্যাকেজ: '+b.pkg+'\n':'')
+    + (b.advance?'• অগ্রিম পরিশোধ: ₹'+Number(b.advance).toLocaleString('en-IN')+'\n':'')
+    + (b.notes?'• বিশেষ নির্দেশ: '+b.notes+'\n':'')
+    + '\nধন্যবাদ 🏛️\nআমন্ত্রণ Banquet, বাঁকুড়া';
+  const phone = String(b.phone).replace(/\D/g,'');
+  const clean = phone.startsWith('91')&&phone.length===12?phone.slice(2):phone;
+  window.open('https://wa.me/91'+clean+'?text='+encodeURIComponent(msg),'_blank');
+}
+
 function cancelBooking(id){
   const b=bookings.find(b=>b.id===id);
   if(!b) return;
   b.status=b.status==='Cancelled'?'Confirmed':'Cancelled';
-  renderBookings(); saveToStorage(); syncSheet('Bookings',bookings);
-  showToast(b.status==='Cancelled'?'Booking cancelled':'Booking restored');
+  renderBookings(); renderCalendar(); saveToStorage(); syncSheet('Bookings',bookings);
+  showToast(b.status==='Cancelled'?'✕ Booking cancelled — তারিখ মুক্ত হয়েছে':'✔ Booking restored');
 }
 
 function editBooking(id){
@@ -1346,11 +1437,14 @@ function renderBookings(){
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
         <span class="booking-badge ${b.status==='Cancelled'?'badge-cancelled':'badge-confirmed'}">${b.status==='Cancelled'?'✕ Cancelled':'✔ Confirmed'}</span>
-        ${(isAdmin||isManager)?`<div style="display:flex;gap:6px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+          ${b.phone?`<button onclick="bookingWhatsApp(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:#25D366;color:#fff;border:none;cursor:pointer;border-radius:2px">💬 WA</button>`:''}
+          ${(isAdmin||isManager)?`
           <button onclick="editBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid var(--gold);color:var(--gold);cursor:pointer">✏ Edit</button>
           <button onclick="cancelBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #e57373;color:#e57373;cursor:pointer">${b.status==='Cancelled'?'↩ Restore':'✕ Cancel'}</button>
           <button onclick="printBookingById(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #555;color:#555;cursor:pointer">🖨 Print</button>
-        </div>`:''}
+          `:''}
+        </div>
       </div>
     </div>`).join('');
 }
@@ -1383,18 +1477,7 @@ function renderAccounts(){
 }
 
 // ── GALLERY ─────────────────────────────────
-function handleImageUpload(e){
-  Array.from(e.target.files).forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      galleryItems.unshift({caption:file.name.replace(/\.[^.]+$/,''),cat:activeGalleryUploadCat||'Wedding',icon:null,src:ev.target.result});
-      renderGallery();
-      saveToStorage();
-    };
-    reader.readAsDataURL(file);
-  });
-  showToast(e.target.files.length+' photo(s) uploaded!');
-}
+function handleImageUpload(e){}
 
 function filterGallery(cat,btn){
   activeFilter=cat;
@@ -1402,93 +1485,22 @@ function filterGallery(cat,btn){
   btn.classList.add('active'); renderGallery();
 }
 
-function renderGallery(){
-  const grid=document.getElementById('gallery-grid');
-  const filtered=activeFilter==='all'?galleryItems:galleryItems.filter(g=>g.cat===activeFilter);
-  if(!filtered.length){grid.innerHTML='<div class="no-data" style="grid-column:1/-1">No photos in this category</div>';return;}
-  grid.innerHTML=filtered.map(g=>`
-    <div class="gallery-item">
-      <div class="gallery-thumb" style="${g.src?'background-image:url('+g.src+');background-size:cover;background-position:center':''}">
-        ${g.src?'':g.icon}
-      </div>
-      <div class="gallery-overlay">
-        <div class="gallery-caption">${g.caption}<small>${g.cat}</small></div>
-      </div>
-    </div>`).join('');
-}
+function renderGallery(){ /* removed */ }
 
 // ── VIDEOS ──────────────────────────────────
 const videoIcons=['🎬','🎥','🎦','📽️','🎞️'];
-function addVideo(){
-  const title=document.getElementById('vid-title').value.trim();
-  if(!title){showToast('Video title দিন');return;}
-  const cat=document.getElementById('vid-cat').value;
-  const dur=document.getElementById('vid-dur').value.trim()||'0:00';
-  videos.unshift({title,cat,dur,icon:videoIcons[Math.floor(Math.random()*videoIcons.length)],date:today()});
-  renderVideos(); saveToStorage(); showToast('Video যোগ হয়েছে!');
-  document.getElementById('vid-title').value=''; document.getElementById('vid-dur').value='';
-}
+function addVideo(){}
 
-function renderVideos(){
-  const grid=document.getElementById('video-grid');
-  if(!videos.length){grid.innerHTML='<div class="no-data" style="grid-column:1/-1">No videos yet</div>';return;}
-  grid.innerHTML=videos.map(v=>`
-    <div class="video-card">
-      <div class="video-thumb">
-        <div class="video-thumb-bg">${v.icon}</div>
-        <div class="play-btn">▶</div>
-      </div>
-      <div class="video-info">
-        <h4>${v.title}</h4>
-        <p>${formatDate(v.date)} · ${v.dur}</p>
-        <span class="video-tag">${v.cat}</span>
-      </div>
-    </div>`).join('');
-}
+function renderVideos(){ /* removed */ }
 
 // ── ALBUMS ──────────────────────────────────
-function openAlbumModal(){document.getElementById('album-modal').classList.add('open');}
-function closeModal(){document.getElementById('album-modal').classList.remove('open');}
-function createAlbum(){
-  const name=document.getElementById('al-name').value.trim();
-  if(!name){showToast('Album name দিন');return;}
-  const type=document.getElementById('al-type').value;
-  const date=document.getElementById('al-date').value;
-  const iconSets={'Rice Ceremony':['🍚','🌸','🙏','✨'],'Birthday Celebration':['🎂','🎉','🎈','🥳'],'Marriage Ceremony':['🌹','💍','🎊','✨'],'Engagement Ceremony':['💍','💐','🥂','❤️'],'Marriage Reception':['👰','🤵','🌸','🎶'],'Social Gathering':['🥂','🎊','🌟','🎉'],'Corporate Meeting':['🏢','🎙️','👔','📊']};
-  albums.unshift({name,type,date:date||today(),count:0,icons:iconSets[type]||['📷','🖼️','🌟','✨']});
-  renderAlbums(); closeModal(); saveToStorage(); showToast('Album "'+name+'" তৈরি হয়েছে!');
-  document.getElementById('al-name').value='';
-}
-
-function renderAlbums(){
-  const grid=document.getElementById('albums-grid');
-  if(!albums.length){grid.innerHTML='<div class="no-data">No albums yet.</div>';return;}
-  grid.innerHTML=albums.map(a=>`
-    <div class="album-card">
-      <div class="album-cover">${a.icons.map(i=>'<div class="album-cover-cell">'+i+'</div>').join('')}</div>
-      <div class="album-info">
-        <h4>${a.name}</h4>
-        <div class="album-meta">
-          <span class="album-count">${a.count} Photos · ${a.type}</span>
-          <span class="album-date">${formatDate(a.date)}</span>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-// ── CALENDAR ────────────────────────────────
-let calYear = new Date().getFullYear();
-let calMonth = new Date().getMonth();
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MONTHS_BN = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
-const DAYS_BN = ['রবি','সোম','মঙ্গল','বুধ','বৃহ','শুক্র','শনি'];
-const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function openAlbumModal(id){}
 
 function toggleMobileNav(){
   const btn = document.getElementById('hamburger');
   const links = document.getElementById('nav-links');
-  btn.classList.toggle('open');
-  links.classList.toggle('open');
+  if(btn) btn.classList.toggle('open');
+  if(links) links.classList.toggle('open');
 }
 
 function closeMobileNav(){
@@ -1604,6 +1616,13 @@ const SHUBHO_ANNA = new Set([
   '2027-02-01','2027-02-03','2027-02-08','2027-02-10','2027-02-15','2027-02-17','2027-02-22','2027-02-24',
 ]);
 
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_BN = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAYS_BN = ['রবি','সোম','মঙ্গল','বুধ','বৃহ','শুক্র','শনি'];
+
 function changeMonth(dir){ calMonth+=dir; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
 
 function renderCalendar(){
@@ -1617,7 +1636,7 @@ function renderCalendar(){
   // Booked dates this month
   // Build set of all booked dates (including ranges)
   const bookedDates=new Set();
-  bookings.forEach(b=>{
+  bookings.filter(b=>b.status!=='Cancelled').forEach(b=>{
     const startStr=normalizeDate(b.date);
     if(!startStr) return;
     const endStr=normalizeDate(b.dateEnd)||startStr;
@@ -1681,6 +1700,7 @@ function renderCalendar(){
 
 function getBookingForDate(ds){
   return bookings.find(b=>{
+    if(b.status==='Cancelled') return false;
     const s=normalizeDate(b.date);
     if(!s) return false;
     const e=normalizeDate(b.dateEnd)||s;
@@ -1831,6 +1851,22 @@ function today(){
 }
 
 // Sheet থেকে আসা date normalize করো (UTC ISO → local YYYY-MM-DD)
+function normalizeTime(t){
+  if(!t) return '';
+  if(typeof t === 'string'){
+    if(/^\d{2}:\d{2}$/.test(t)) return t;
+    if(t.includes('T')){
+      const parts = t.split('T');
+      if(parts[1]) return parts[1].substring(0,5);
+    }
+  }
+  if(t instanceof Date || (typeof t === 'object')){
+    const d = new Date(t);
+    if(!isNaN(d)) return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  }
+  return String(t).substring(0,5);
+}
+
 function normalizeDate(d){
   if(!d) return '';
   // Already YYYY-MM-DD
@@ -1934,29 +1970,37 @@ async function sheetsFetch(payload){
   } catch(e){ console.warn('Sheets POST error:', e); return null; }
 }
 
+function cleanRows(data){
+  if(!Array.isArray(data)) return null;
+  const rows = data.filter(r=>r && Object.values(r).some(v=>v!==null&&v!==''&&v!==undefined));
+  return rows.length ? rows : null;
+}
+
 async function sheetsGet(sheet){
   if(!SHEETS_URL) return null;
+  const url = SHEETS_URL + '?action=get&sheet=' + encodeURIComponent(sheet);
+  // Try 1: direct fetch (fast)
   try {
-    // Use JSONP-style GET via script tag to bypass CORS
-    return await new Promise((resolve) => {
-      const cbName = '_cb_' + Date.now();
-      const script = document.createElement('script');
-      const timeout = setTimeout(() => {
-        delete window[cbName];
-        document.body.removeChild(script);
-        resolve(null);
-      }, 8000);
-      window[cbName] = (data) => {
-        clearTimeout(timeout);
-        delete window[cbName];
-        document.body.removeChild(script);
-        resolve(data);
-      };
-      script.src = SHEETS_URL + '?action=get&sheet=' + encodeURIComponent(sheet) + '&callback=' + cbName;
-      script.onerror = () => { clearTimeout(timeout); resolve(null); };
-      document.body.appendChild(script);
-    });
-  } catch(e){ return null; }
+    const res = await Promise.race([
+      fetch(url),
+      new Promise((_,reject) => setTimeout(()=>reject(new Error('timeout')), 5000))
+    ]);
+    if(res.ok){
+      const d = await res.json();
+      const clean = cleanRows(d);
+      if(clean) return clean;
+    }
+  } catch(e1){}
+  // Try 2: JSONP fallback
+  return await new Promise((resolve) => {
+    const cb = '_gs' + Date.now();
+    const el = document.createElement('script');
+    const t = setTimeout(()=>{ delete window[cb]; try{el.remove()}catch(e){} resolve(null); }, 5000);
+    window[cb] = (d) => { clearTimeout(t); delete window[cb]; try{el.remove()}catch(e){} resolve(cleanRows(d)); };
+    el.onerror = () => { clearTimeout(t); delete window[cb]; resolve(null); };
+    el.src = url + '&callback=' + cb;
+    document.body.appendChild(el);
+  });
 }
 
 async function syncSheet(sheetName, data){
@@ -1994,12 +2038,16 @@ async function loadFromSheets(){
     ]);
     let loaded = false;
     if(bks && Array.isArray(bks) && bks.length){
-      bookings = bks.map(b=>({...b, date: normalizeDate(b.date), dateEnd: normalizeDate(b.dateEnd), pkgIds: tryParse(b.pkgIds)||[], facilities: tryParse(b.facilities)}));
-      loaded = true;
+      const cleaned = bks.filter(b=>b&&b.name).map(b=>({...b, date: normalizeDate(b.date), dateEnd: normalizeDate(b.dateEnd)||normalizeDate(b.date), pkgIds: tryParse(b.pkgIds)||[], facilities: tryParse(b.facilities)}));
+      if(cleaned.length){ bookings = cleaned; loaded = true; }
     }
     if(pkgs && Array.isArray(pkgs) && pkgs.length){
-      savedPackages = pkgs.map(p=>({...p, facilities: tryParse(p.facilities)}));
-      loaded = true;
+      const cleanedPkgs = pkgs.filter(p=>p&&p.name).map(p=>({...p,
+        facilities: tryParse(p.facilities),
+        timeStart: p.timeStart ? normalizeTime(p.timeStart) : '',
+        timeEnd: p.timeEnd ? normalizeTime(p.timeEnd) : ''
+      }));
+      if(cleanedPkgs.length){ savedPackages = cleanedPkgs; loaded = true; }
     }
     if(txns && Array.isArray(txns) && txns.length){ transactions = txns; loaded = true; }
     if(albs && Array.isArray(albs) && albs.length){ albums = albs.map(a=>({...a, icons: tryParse(a.icons)})); loaded = true; }
@@ -2100,24 +2148,37 @@ function updatePinDots(){
 function checkPin(){
   if(pinBuffer === ADMIN_PIN){
     isAdmin = true; isManager = false;
-    document.getElementById('pin-overlay').style.display = 'none';
-    document.getElementById('admin-badge').style.display = 'none';
-    document.getElementById('logout-btn').style.display = 'block';
-    document.getElementById('mode-label').style.display = 'block';
-    document.getElementById('mode-label').textContent = '👑 ADMIN';
-    document.querySelector('.settings-btn').style.display = 'flex';
+    try{
+      document.getElementById('pin-overlay').style.display = 'none';
+      document.getElementById('admin-badge').style.display = 'none';
+      document.getElementById('logout-btn').style.display = 'block';
+      document.getElementById('mode-label').style.display = 'block';
+      document.getElementById('mode-label').textContent = '👑 ADMIN';
+      document.querySelector('.settings-btn').style.display = 'flex';
+    }catch(e){}
     applyAccessMode();
-    showToast('✔ Admin mode activated!');
+    // Load fresh data from Sheets on login
+    loadFromSheets().then(()=>{
+      renderSavedPackages(); renderBookings(); renderCalendar();
+      renderAccounts(); renderReviews(); renderSocialLinks(); renderDecorationItems();
+    });
+    showToast('✔ Admin mode activated! Data লোড হচ্ছে...');
   } else if(pinBuffer === MANAGER_PIN){
     isManager = true; isAdmin = false;
-    document.getElementById('pin-overlay').style.display = 'none';
-    document.getElementById('admin-badge').style.display = 'none';
-    document.getElementById('logout-btn').style.display = 'block';
-    document.getElementById('mode-label').style.display = 'block';
-    document.getElementById('mode-label').textContent = '🛡 MANAGER';
-    document.querySelector('.settings-btn').style.display = 'none';
+    try{
+      document.getElementById('pin-overlay').style.display = 'none';
+      document.getElementById('admin-badge').style.display = 'none';
+      document.getElementById('logout-btn').style.display = 'block';
+      document.getElementById('mode-label').style.display = 'block';
+      document.getElementById('mode-label').textContent = '🛡 MANAGER';
+      document.querySelector('.settings-btn').style.display = 'none';
+    }catch(e){}
     applyAccessMode();
-    showToast('✔ Manager mode activated!');
+    loadFromSheets().then(()=>{
+      renderSavedPackages(); renderBookings(); renderCalendar();
+      renderAccounts(); renderReviews(); renderSocialLinks(); renderDecorationItems();
+    });
+    showToast('✔ Manager mode activated! Data লোড হচ্ছে...');
   } else {
     document.getElementById('pin-error').textContent = '❌ ভুল PIN — আবার চেষ্টা করো';
     pinBuffer = '';
@@ -2133,7 +2194,10 @@ function publicMode(){
   isAdmin = false; isManager = false;
   document.getElementById('pin-overlay').style.display = 'none';
   document.getElementById('admin-badge').style.display = 'block';
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('mode-label').style.display = 'none';
   document.querySelector('.settings-btn').style.display = 'none';
+  pinBuffer = '';
   applyAccessMode();
 }
 
@@ -2159,34 +2223,48 @@ function applyAccessMode(){
   const heroCta = document.getElementById('hero-cta');
   if(heroCta) heroCta.style.display = (isAdmin||isManager) ? 'flex' : 'none';
 
-  const adminOnlyNav = ['nav-calendar','nav-booking','nav-accounts'];
-  const managerNav   = ['nav-calendar','nav-booking','nav-decoration']; // manager sees these, NOT accounts
+  // Calendar is visible to ALL — only booking & accounts are admin/manager only
+  const adminOnlyNav = ['nav-booking','nav-accounts'];
+  const publicNav = ['nav-home','nav-calendar','nav-packages','nav-social','nav-reviews','nav-decoration'];
   const pkgEditor = document.getElementById('pkg-editor');
-  const galleryUpload = document.getElementById('gallery-upload');
-  const videoAddForm = document.getElementById('video-add-form');
-  const albumCreateBtn = document.getElementById('album-create-btn');
-  const fileInput = document.getElementById('fileInput');
+
+  // Always show public nav items
+  publicNav.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && el.parentElement) el.parentElement.style.display='';
+  });
 
   if(isAdmin){
-    // Full access
-    [...adminOnlyNav,'nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    // Full access — show all nav
+    [...adminOnlyNav,'nav-decoration','nav-reviews','nav-social'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.parentElement) el.parentElement.style.display='';
+    });
     if(pkgEditor) pkgEditor.style.display='block';
   } else if(isManager){
-    // Manager: calendar, booking, decoration — NO accounts
-    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display= id==='nav-accounts'?'none':''; });
-    ['nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    // Manager: booking visible, accounts hidden
+    adminOnlyNav.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.parentElement) el.parentElement.style.display = id==='nav-accounts'?'none':'';
+    });
     if(pkgEditor) pkgEditor.style.display='none';
-    const hiddenPages=['accounts'];
+    // Redirect away from hidden pages
     const activePage=document.querySelector('.page.active');
-    if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
+    if(activePage && activePage.id==='page-accounts') showPage('home');
   } else {
-    // Public
-    adminOnlyNav.forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display='none'; });
-    ['nav-decoration','nav-reviews','nav-social'].forEach(id=>{ const el=document.getElementById(id); if(el) el.parentElement.style.display=''; });
+    // Public — hide booking & accounts only
+    adminOnlyNav.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.parentElement) el.parentElement.style.display='none';
+    });
+    ['nav-decoration','nav-reviews','nav-social'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.parentElement) el.parentElement.style.display='';
+    });
     if(pkgEditor) pkgEditor.style.display='none';
-    const hiddenPages=['calendar','booking','accounts'];
+    // Redirect away from hidden pages
     const activePage=document.querySelector('.page.active');
-    if(activePage && hiddenPages.some(p=>activePage.id==='page-'+p)) showPage('home');
+    if(activePage && ['page-calendar','page-booking','page-accounts'].includes(activePage.id)) showPage('home');
   }
   renderSavedPackages();
 }
@@ -2201,7 +2279,9 @@ function sendWhatsAppMsg(phone, msg){
 }
 
 // ── SOCIAL LINKS ────────────────────────────
-let socialLinks = [];
+let socialLinks = [
+  {id:1777039893043,platform:"Facebook",label:"Facebook",url:"https://www.facebook.com/share/1FGmqLqNnj/"}
+];
 
 const SOCIAL_ICONS = {
   'Facebook': '📘', 'Instagram': '📸', 'YouTube': '▶️',
@@ -2434,20 +2514,33 @@ function sendBillWhatsApp(){
 
 // ── INIT ────────────────────────────────────
 loadFromStorage();
-document.getElementById('album-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.getElementById('txn-date').value=today();
 document.getElementById('bk-date').value=today();
 const decoDateEl=document.getElementById('deco-date'); if(decoDateEl) decoDateEl.value=today();
+
+// Render from hard-coded data first (instant)
 renderQuickFac(); updatePkgPreview();
-renderSavedPackages();
-renderBookings();
-renderCalendar();
-renderAccounts();
-renderReviews();
-renderSocialLinks();
-renderDecorationItems();
-// Auto-load from Sheets on startup if URL is set
-if(SHEETS_URL){ loadFromSheets().then(()=>{ renderSavedPackages(); renderBookings(); renderAccounts(); renderVideos(); renderAlbums(); }); }
+renderSavedPackages(); renderBookings(); renderCalendar();
+renderAccounts(); renderReviews(); renderSocialLinks(); renderDecorationItems();
+
+// Then fetch latest from Sheet (real-time sync)
+async function initSync(){
+  const loader = document.getElementById('data-loading');
+  if(loader) loader.style.display='flex';
+  try {
+    const loaded = await loadFromSheets();
+    if(loaded){
+      renderSavedPackages(); renderBookings(); renderCalendar();
+      renderAccounts(); renderReviews(); renderSocialLinks(); renderDecorationItems();
+    }
+  } catch(e){ console.warn('Sync failed:', e); }
+  finally {
+    if(loader) loader.style.display='none';
+    // Show PIN overlay after data loads
+    document.getElementById('pin-overlay').style.display='flex';
+  }
+}
+initSync();
 </script>
 </body>
 </html>
