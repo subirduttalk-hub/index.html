@@ -1013,35 +1013,39 @@ let savedPackages = [
 ];
 let selectedBookingPkgIds = [];
 let bookings = [
-  {id:1777109871448,name:"Pabitra pan",phone:"+91 91265 13865",email:"",date:"2026-06-06",dateEnd:"2026-06-06",type:"Rice Ceremony",guests:400,advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776888446105,name:"subir",phone:"9434439553",email:"",date:"2026-06-26",dateEnd:"2026-06-26",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776887588408,name:"akash",phone:"9434439553",email:"",date:"2026-06-30",dateEnd:"2026-06-30",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776887527345,name:"akash",phone:"9434439553",email:"",date:"2026-05-29",dateEnd:"2026-05-29",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776887504532,name:"akash",phone:"9434439553",email:"",date:"2026-05-26",dateEnd:"2026-05-26",type:"Marriage Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853346636,name:"manas",phone:"9153164457",email:"",date:"2026-05-27",dateEnd:"2026-05-28",type:"Engagement Ceremony",guests:500,advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853128338,name:"ddd",phone:"9434439553",email:"",date:"2026-05-07",dateEnd:"2026-05-08",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853066362,name:"ddd",phone:"9434439553",email:"",date:"2026-04-29",dateEnd:"2026-05-01",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853009060,name:"ddd",phone:"9434439553",email:"",date:"2026-04-28",dateEnd:"2026-04-28",type:"Rice Ceremony",guests:500,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776846137951,name:"pal",phone:"9434439553",email:"",date:"2026-04-24",dateEnd:"2026-04-24",type:"Rice Ceremony",guests:350,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776770052086,name:"DD",phone:"94348873902",email:"",date:"2026-04-23",dateEnd:"2026-04-23",type:"Social Gathering",guests:200,advance:0,notes:"N/A",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776719835782,name:"hhhhh",phone:"9434439553",email:"",date:"2026-04-21",dateEnd:"2026-04-21",type:"Rice Ceremony",guests:300,advance:5000,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776718909457,name:"fgfdg",phone:"",email:"",date:"2026-05-11",dateEnd:"2026-05-11",type:"Rice Ceremony",guests:"",advance:0,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776717713369,name:"amit",phone:"9434439553",email:"",date:"2026-05-13",dateEnd:"2026-05-13",type:"Rice Ceremony",guests:500,advance:500,notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"}
+  {id:1777398382127,name:"red",phone:"",email:"",date:"2026-05-05",dateEnd:"2026-05-07",type:"Rice Ceremony",guests:0,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1777396922397,name:"subhas chandra dutta",phone:"9474565101",email:"",date:"2026-05-24",dateEnd:"2026-05-24",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:49999,payments:[],notes:"",pkg:"diamond pro max",pkgIds:[1776724222812],status:"Confirmed"},
+  {id:1777310223451,name:"anita",phone:"",email:"",date:"2026-04-25",dateEnd:"2026-04-27",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1777015040062,name:"subir",phone:"9434439553",email:"",date:"2026-07-29",dateEnd:"2026-07-29",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Cancelled"},
+  {id:1776887588408,name:"akash",phone:"9434439553",email:"",date:"2026-06-29",dateEnd:"2026-06-29",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776887527345,name:"akash",phone:"9434439553",email:"",date:"2026-05-28",dateEnd:"2026-05-28",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776887504532,name:"akash",phone:"9434439553",email:"",date:"2026-05-25",dateEnd:"2026-05-25",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853346636,name:"manas",phone:"9153164457",email:"",date:"2026-05-26",dateEnd:"2026-05-27",type:"Engagement Ceremony",guests:500,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853128338,name:"ddd",phone:"9434439553",email:"",date:"2026-05-06",dateEnd:"2026-05-07",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853066362,name:"ddd",phone:"9434439553",email:"",date:"2026-04-28",dateEnd:"2026-04-30",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776853009060,name:"ddd",phone:"9434439553",email:"",date:"2026-04-27",dateEnd:"2026-04-27",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776846137951,name:"pal",phone:"9434439553",email:"",date:"2026-04-23",dateEnd:"2026-04-23",type:"Rice Ceremony",guests:350,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776770052086,name:"DD",phone:"9434887390",email:"",date:"2026-04-22",dateEnd:"2026-04-22",type:"Social Gathering",guests:200,advance:0,pkgRate:0,payments:[],notes:"N/A",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776719835782,name:"hhhhh",phone:"9434439553",email:"",date:"2026-04-20",dateEnd:"2026-04-20",type:"Rice Ceremony",guests:300,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776718909457,name:"fgfdg",phone:"",email:"",date:"2026-05-10",dateEnd:"2026-05-10",type:"Rice Ceremony",guests:0,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
+  {id:1776717713369,name:"amit",phone:"9434439553",email:"",date:"2026-05-12",dateEnd:"2026-05-12",type:"Rice Ceremony",guests:500,advance:500,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"}
 ];
 let transactions = [
-  {id:1777109871448,desc:"Advance — Pabitra pan (Rice Ceremony)",amt:0,type:"income",date:"2026-06-06"},
+  {id:1777396922397,desc:"Advance — subhas chandra dutta (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-24"},
+  {id:1777310223451,desc:"Advance — anita (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-25"},
+  {id:1777015040062,desc:"Advance — subir (Rice Ceremony)",amt:5000,type:"income",date:"2026-07-29"},
   {id:1776888446105,desc:"Advance — subir (Rice Ceremony)",amt:5000,type:"income",date:"2026-06-26"},
-  {id:1776887588408,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-06-30"},
-  {id:1776887527345,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-29"},
-  {id:1776887504532,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-26"},
-  {id:1776853128338,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-05-07"},
-  {id:1776853066362,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-29"},
-  {id:1776853009060,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-28"},
-  {id:1776846137951,desc:"Advance — pal (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-24"},
+  {id:1776887588408,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-06-29"},
+  {id:1776887527345,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-28"},
+  {id:1776887504532,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-25"},
+  {id:1776853128338,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-05-06"},
+  {id:1776853066362,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-28"},
+  {id:1776853009060,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-27"},
+  {id:1776846137951,desc:"Advance — pal (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-23"},
   {id:1776794697626,desc:"fffff",amt:3000,type:"income",date:"2026-04-27"},
-  {id:1776770052086,desc:"Advance — DD (Social Gathering)",amt:0,type:"income",date:"2026-04-23"},
-  {id:1776719835782,desc:"Advance — hhhhh (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-21"},
-  {id:1776717713369,desc:"Advance — amit (Rice Ceremony)",amt:500,type:"income",date:"2026-05-13"}
+  {id:1776770052086,desc:"Advance — DD (Social Gathering)",amt:0,type:"income",date:"2026-04-22"},
+  {id:1776719835782,desc:"Advance — hhhhh (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-20"},
+  {id:1776717713369,desc:"Advance — amit (Rice Ceremony)",amt:500,type:"income",date:"2026-05-12"}
 ];
 let activeGalleryUploadCat = 'Wedding';
 let galleryItems = [
@@ -1626,7 +1630,7 @@ function cancelBooking(id){
   const b=bookings.find(b=>b.id===id);
   if(!b) return;
   b.status=b.status==='Cancelled'?'Confirmed':'Cancelled';
-  renderBookings(); renderCalendar(); saveToStorage(); syncSheet('Bookings',bookings);
+  sortBookings(); renderBookings(); renderCalendar(); saveToStorage(); syncSheet('Bookings',bookings);
   showToast(b.status==='Cancelled'?'✕ Booking cancelled — তারিখ মুক্ত হয়েছে':'✔ Booking restored');
 }
 
@@ -1662,7 +1666,13 @@ function editBooking(id){
 function renderBookings(){
   const c=document.getElementById('bookings-container');
   if(!bookings.length){c.innerHTML='<div class="no-data">No bookings yet.</div>';return;}
-  c.innerHTML=bookings.map(b=>`
+  // Sort by date — upcoming first, then past
+  const sorted=[...bookings].sort((a,b)=>{
+    const da=normalizeDate(a.date)||'9999';
+    const db=normalizeDate(b.date)||'9999';
+    return da.localeCompare(db);
+  });
+  c.innerHTML=sorted.map(b=>`
     <div class="booking-item" id="bk-${b.id}">
       <div class="booking-info">
         <h4>${b.name} — ${b.type}</h4>
@@ -2348,6 +2358,14 @@ function tryParse(val){
 }
 
 // ── LOCALSTORAGE (local backup) ──────────────
+function sortBookings(){
+  bookings.sort((a,b)=>{
+    const da=normalizeDate(a.date)||'9999';
+    const db=normalizeDate(b.date)||'9999';
+    return da.localeCompare(db);
+  });
+}
+
 function saveToStorage(){
   try {
     localStorage.setItem('aamantran_packages', JSON.stringify(savedPackages));
