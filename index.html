@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,8 +42,6 @@
   .hamburger.open span:nth-child(2){ opacity:0; }
   .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
   @media(max-width:768px){
-    .hero h1 { font-size:clamp(1.6rem,8vw,2.8rem) !important; }
-    .hero-sub { font-size:0.68rem !important; letter-spacing:1px !important; }
     .hamburger { display:flex; }
     .nav-links { 
       display:none; flex-direction:column; position:fixed; top:52px; left:0; right:0;
@@ -69,9 +68,9 @@
   .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%, rgba(201,168,76,0.12) 0%, transparent 70%); }
   .hero-ornament { font-family:'Noto Sans Bengali',sans-serif; font-size:5rem; color:#f5c000; font-weight:700; position:absolute; top:10%; left:50%; transform:translateX(-50%); letter-spacing:10px; white-space:nowrap; pointer-events:none; }
   .hero-tag { font-family:'Cinzel',serif; font-size:0.68rem; letter-spacing:6px; color:var(--gold); margin-bottom:18px; animation:fadeUp 1s ease both; }
-  .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,5vw,4rem); color:var(--white); font-weight:300; line-height:1.2; animation:fadeUp 1s 0.2s ease both; }
+  .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.8rem,7vw,5.5rem); color:var(--white); font-weight:300; line-height:1.1; animation:fadeUp 1s 0.2s ease both; }
   .hero h1 em { font-style:italic; color:var(--gold-light); }
-  .hero-sub { font-size:0.78rem; color:rgba(255,255,255,0.5); letter-spacing:1.5px; margin-top:12px; line-height:1.6; animation:fadeUp 1s 0.4s ease both; }
+  .hero-sub { font-size:0.88rem; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-top:16px; animation:fadeUp 1s 0.4s ease both; }
   .hero-divider { width:80px; height:1px; background:var(--gold); margin:26px auto; position:relative; animation:fadeUp 1s 0.5s ease both; }
   .hero-divider::before,.hero-divider::after { content:'◆'; position:absolute; top:50%; transform:translateY(-50%); color:var(--gold); font-size:0.5rem; }
   .hero-divider::before { left:-14px; } .hero-divider::after { right:-14px; }
@@ -166,6 +165,9 @@
   .booking-item { background:var(--white); border-left:3px solid var(--gold); padding:15px 19px; margin-bottom:11px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
   .booking-info h4 { font-family:'Cinzel',serif; font-size:0.85rem; color:var(--dark); }
   .booking-info p { font-size:0.76rem; color:#888; margin-top:4px; }
+  .payment-history-row { font-size:0.72rem; color:#666; padding:2px 0; }
+  .dues-tag { display:inline-block; background:#fff0f0; color:#c0392b; padding:2px 8px; font-size:0.7rem; border:1px solid #e57373; border-radius:2px; font-weight:600; }
+  .paid-tag { display:inline-block; background:#f0fff4; color:#27ae60; padding:2px 8px; font-size:0.7rem; border:1px solid #27ae60; border-radius:2px; font-weight:600; }
   .badge-cancelled { background:rgba(229,115,115,0.15); color:#e57373; border:1px solid #e57373; }
   .booking-badge { font-size:0.65rem; letter-spacing:1px; padding:4px 11px; text-transform:uppercase; }
   .badge-confirmed { background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; }
@@ -427,7 +429,7 @@
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
-    <div class="hero-ornament" style="line-height:1;display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:16px;">আমন্ত্রণ<span style="font-family:'Cinzel',serif;font-size:1.8rem;color:#c0c0c0;letter-spacing:18px;font-weight:400;margin-top:8px;">BANQUET</span></div>
+    <div class="hero-ornament" style="line-height:1;display:flex;flex-direction:column;align-items:center;gap:0;">আমন্ত্রণ<span style="font-family:'Cinzel',serif;font-size:1.8rem;color:#c0c0c0;letter-spacing:18px;font-weight:400;margin-top:8px;">BANQUET</span></div>
 
     <h1>প্রতিটি উৎসবের<br><em>শুভ সূচনা</em> এখানেই</h1>
     <p class="hero-sub">অন্নপ্রাশন · জন্মদিন · বিবাহ · এনগেজমেন্ট · রিসেপশন · সামাজিক অনুষ্ঠান · কর্পোরেট মিটিং</p>
@@ -645,27 +647,14 @@
       <div class="field"><label>No. of Guests</label><input id="bk-guests" type="number" placeholder="e.g. 300"></div>
       <div class="field"><label>Advance Amount (₹)</label><input id="bk-advance" type="number" placeholder="e.g. 25000" oninput="updateDues()"></div>
       <div class="field"><label>Package Rate (₹)</label><input id="bk-pkg-rate" type="number" placeholder="Auto / Manual" oninput="updateDues()"></div>
-      <div class="field" id="dues-field" style="display:none">
-        <label>Dues Balance (₹)</label>
-        <div id="bk-dues" style="padding:10px 12px;background:#fff8e7;border:1px solid #e0d4b8;font-size:0.9rem;font-weight:600;color:#c0392b;font-family:'Cinzel',serif"></div>
-      </div>
+      <div class="field" id="dues-field" style="display:none"><label>Dues Balance (₹)</label><div id="bk-dues" style="padding:10px 12px;background:#fff8e7;border:1px solid #e0d4b8;font-size:0.9rem;font-weight:600;color:#c0392b;font-family:Cinzel,serif"></div></div>
       <div class="field full"><label>Special Requirements</label><textarea id="bk-notes" placeholder="Decor preferences, dietary needs..."></textarea></div>
-      <!-- DG Oil Calculator -->
-      <div class="field full" style="background:#fffdf7;border:1px solid rgba(201,168,76,0.3);padding:14px 16px;margin-top:4px">
-        <label style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:1.5px;color:var(--mid)">⚡ DG OIL CALCULATOR</label>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center">
-          <div style="flex:1;min-width:100px">
-            <label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">Duration (min)</label>
-            <input id="dg-min" type="number" placeholder="e.g. 120" oninput="calcDG()" style="width:100%;padding:8px;border:1px solid #e0d4b8;font-size:0.82rem">
-          </div>
-          <div style="flex:1;min-width:100px">
-            <label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">Diesel Rate (₹/lit)</label>
-            <input id="dg-rate" type="number" placeholder="e.g. 92" oninput="calcDG()" style="width:100%;padding:8px;border:1px solid #e0d4b8;font-size:0.82rem">
-          </div>
-          <div style="flex:1;min-width:120px">
-            <label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">DG Oil Cost</label>
-            <div id="dg-result" style="padding:8px 12px;background:#fff;border:1px solid #e0d4b8;font-size:0.85rem;font-weight:600;color:var(--dark);min-height:36px">—</div>
-          </div>
+      <div class="field full" style="background:#fffdf7;border:1px solid rgba(201,168,76,0.3);padding:14px 16px">
+        <label style="font-family:Cinzel,serif;font-size:0.7rem;letter-spacing:1.5px;color:var(--mid)">DG OIL CALCULATOR</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:flex-end">
+          <div style="flex:1;min-width:90px"><label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">Duration (min)</label><input id="dg-min" type="number" placeholder="e.g. 120" oninput="calcDG()" style="width:100%;padding:8px;border:1px solid #e0d4b8;font-size:0.82rem"></div>
+          <div style="flex:1;min-width:90px"><label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">Diesel Rate (Rs/lit)</label><input id="dg-rate" type="number" placeholder="e.g. 92" oninput="calcDG()" style="width:100%;padding:8px;border:1px solid #e0d4b8;font-size:0.82rem"></div>
+          <div style="flex:1;min-width:110px"><label style="font-size:0.68rem;color:#999;display:block;margin-bottom:4px">DG Oil Cost</label><div id="dg-result" style="padding:8px 12px;background:#fff;border:1px solid #e0d4b8;font-size:0.85rem;font-weight:600;color:var(--dark)">---</div></div>
         </div>
         <div id="dg-breakdown" style="font-size:0.7rem;color:#999;margin-top:6px"></div>
       </div>
@@ -843,6 +832,36 @@
 <div class="data-loading" id="data-loading">
   <div class="loading-spinner"></div>
   <p>DATA লোড হচ্ছে...</p>
+</div>
+
+<!-- BILL MODAL -->
+<div id="bill-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:3500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px 10px">
+  <div style="background:#fff;max-width:720px;width:100%;margin:0 auto;position:relative;font-family:Georgia,serif">
+    <div style="display:flex;gap:10px;padding:14px 20px;background:#1a0f05;position:sticky;top:0;z-index:1" class="no-print">
+      <button onclick="printBillModal()" style="flex:1;padding:10px;background:#c9a84c;color:#1a0f05;border:none;font-family:Georgia;font-size:0.8rem;letter-spacing:2px;cursor:pointer">Print / PDF</button>
+      <button onclick="billModalWA()" style="flex:1;padding:10px;background:#25D366;color:#fff;border:none;font-family:Georgia;font-size:0.8rem;letter-spacing:2px;cursor:pointer">WhatsApp</button>
+      <button onclick="closeBillModal()" style="padding:10px 16px;background:#555;color:#fff;border:none;cursor:pointer;font-size:1rem">X</button>
+    </div>
+    <div id="bill-content-area" style="padding:30px"></div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="payment-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:3000;align-items:center;justify-content:center">
+  <div style="background:var(--white);padding:28px;max-width:420px;width:90%;position:relative;border-top:3px solid var(--gold)">
+    <button onclick="closePaymentModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999">x</button>
+    <h3 style="font-family:Cinzel,serif;font-size:0.85rem;letter-spacing:2px;color:var(--mid);margin-bottom:16px">PAYMENT ENTRY</h3>
+    <div id="payment-modal-info" style="background:#fffdf7;padding:10px 14px;margin-bottom:16px;font-size:0.82rem;color:#555;border-left:3px solid var(--gold)"></div>
+    <div class="form-grid">
+      <div class="field"><label>Payment Date</label><input id="pay-date" type="date"></div>
+      <div class="field"><label>Amount (Rs)</label><input id="pay-amt" type="number" placeholder="e.g. 10000"></div>
+      <div class="field full"><label>Note (optional)</label><input id="pay-note" type="text" placeholder="Cash / UPI / Cheque"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn-gold" style="flex:1" onclick="addPayment()">Save Payment</button>
+      <button class="btn-outline" onclick="closePaymentModal()">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <!-- PIN OVERLAY -->
@@ -1357,41 +1376,35 @@ function selectBookingPkg(id,el){
   const idx=selectedBookingPkgIds.indexOf(id);
   if(idx>=0){ selectedBookingPkgIds.splice(idx,1); el.classList.remove('selected'); }
   else { selectedBookingPkgIds.push(id); el.classList.add('selected'); }
-  // Auto-fill package rate from first selected package
-  const firstPkg = savedPackages.find(p=>selectedBookingPkgIds.includes(p.id));
-  const rateEl = document.getElementById('bk-pkg-rate');
-  if(rateEl && firstPkg) rateEl.value = firstPkg.rate||'';
+  const firstPkg=savedPackages.find(p=>selectedBookingPkgIds.includes(p.id));
+  const rateEl=document.getElementById('bk-pkg-rate');
+  if(rateEl&&firstPkg) rateEl.value=firstPkg.rate||'';
   updateDues();
 }
 
 function updateDues(){
-  const pkgRate = Number(document.getElementById('bk-pkg-rate')?.value||0);
-  const advance = Number(document.getElementById('bk-advance')?.value||0);
-  const duesField = document.getElementById('dues-field');
-  const duesEl = document.getElementById('bk-dues');
-  if(pkgRate > 0){
-    const dues = pkgRate - advance;
-    if(duesEl) duesEl.textContent = '₹'+dues.toLocaleString('en-IN')+(dues<0?' (অতিরিক্ত জমা)':' বাকি');
-    if(duesField) duesField.style.display='';
-  } else {
-    if(duesField) duesField.style.display='none';
-  }
+  const pkgRate=Number(document.getElementById('bk-pkg-rate')?.value||0);
+  const advance=Number(document.getElementById('bk-advance')?.value||0);
+  const df=document.getElementById('dues-field');
+  const de=document.getElementById('bk-dues');
+  if(pkgRate>0){
+    const dues=pkgRate-advance;
+    if(de) de.textContent='Rs '+dues.toLocaleString('en-IN')+(dues<0?' (excess paid)':' balance due');
+    if(df) df.style.display='';
+  } else { if(df) df.style.display='none'; }
 }
 
 function calcDG(){
-  const min = Number(document.getElementById('dg-min')?.value||0);
-  const rate = Number(document.getElementById('dg-rate')?.value||0);
-  const resultEl = document.getElementById('dg-result');
-  const breakEl = document.getElementById('dg-breakdown');
-  if(min > 0 && rate > 0){
-    const litres = (3 * min) / 60;
-    const cost = litres * rate;
-    if(resultEl) resultEl.textContent = '₹'+cost.toLocaleString('en-IN',{maximumFractionDigits:2});
-    if(breakEl) breakEl.textContent = min+' min × 3 lit/60 min = '+litres.toFixed(2)+' lit × ₹'+rate+'/lit = ₹'+cost.toFixed(2);
-  } else {
-    if(resultEl) resultEl.textContent = '—';
-    if(breakEl) breakEl.textContent = '';
-  }
+  const min=Number(document.getElementById('dg-min')?.value||0);
+  const rate=Number(document.getElementById('dg-rate')?.value||0);
+  const re=document.getElementById('dg-result');
+  const br=document.getElementById('dg-breakdown');
+  if(min>0&&rate>0){
+    const lit=(3*min)/60;
+    const cost=lit*rate;
+    if(re) re.textContent='Rs '+cost.toLocaleString('en-IN',{maximumFractionDigits:2});
+    if(br) br.textContent=min+' min x 3lit/60min = '+lit.toFixed(2)+' lit x Rs '+rate+'/lit = Rs '+cost.toFixed(2);
+  } else { if(re) re.textContent='---'; if(br) br.textContent=''; }
 }
 
 function addBooking(){
@@ -1402,18 +1415,16 @@ function addBooking(){
   if(!name||!date){showToast('Name এবং Date আবশ্যক');return;}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){showToast('সঠিক Date দিন');return;}
   if(multiMode&&dateEnd&&dateEnd<date){showToast('End date, start date এর আগে হতে পারবে না');return;}
-  // Check date range conflict — any overlap with existing confirmed bookings
-  const newStart = date;
-  const newEnd = (multiMode && dateEnd) ? dateEnd : date;
-  const conflict = bookings.find(b=>{
+  // Check range overlap with confirmed bookings
+  const newStart=date, newEnd=(multiMode&&dateEnd)?dateEnd:date;
+  const conflict=bookings.find(b=>{
     if(b.status==='Cancelled') return false;
-    const bStart = normalizeDate(b.date);
-    const bEnd = normalizeDate(b.dateEnd)||bStart;
-    // Overlap if: newStart <= bEnd AND newEnd >= bStart
-    return newStart <= bEnd && newEnd >= bStart;
+    const s=normalizeDate(b.date), e=normalizeDate(b.dateEnd)||s;
+    return newStart<=e && newEnd>=s;
   });
   if(conflict){
-    showToast('⚠ '+formatDate(conflict.date)+(conflict.dateEnd&&conflict.dateEnd!==conflict.date?' — '+formatDate(conflict.dateEnd):'')+' তারিখে '+conflict.name+' এর booking আছে!');
+    const cDate=conflict.dateEnd&&conflict.dateEnd!==conflict.date?formatDate(conflict.date)+' to '+formatDate(conflict.dateEnd):formatDate(conflict.date);
+    showToast('⚠ '+cDate+' তারিখে '+conflict.name+' এর booking আছে!');
     return;
   }
   const type=document.getElementById('bk-type').value;
@@ -1424,9 +1435,8 @@ function addBooking(){
   const notes=document.getElementById('bk-notes').value.trim();
   const selectedPkgs=savedPackages.filter(p=>selectedBookingPkgIds.includes(p.id));
   const pkgNames=selectedPkgs.length?selectedPkgs.map(p=>p.name).join(', '):'Custom';
-  const pkgRate = Number(document.getElementById('bk-pkg-rate')?.value||0);
-  const dues = pkgRate > 0 ? pkgRate - Number(advance||0) : 0;
-  const booking={name,phone,email,date,dateEnd:dateEnd||date,type,guests,advance,pkgRate,dues,notes,pkg:pkgNames,pkgIds:[...selectedBookingPkgIds],status:'Confirmed',id:Date.now()};
+  const pkgRate=Number(document.getElementById('bk-pkg-rate')?.value||0);
+  const booking={name,phone,email,date,dateEnd:dateEnd||date,type,guests,advance,pkgRate,payments:[],notes,pkg:pkgNames,pkgIds:[...selectedBookingPkgIds],status:'Confirmed',id:Date.now()};
   bookings.unshift(booking);
   if(advance)transactions.unshift({desc:'Advance — '+name+' ('+type+')',amt:Number(advance),type:'income',date,id:Date.now()});
   renderBookings(); saveToStorage();
@@ -1435,10 +1445,9 @@ function addBooking(){
   const selectedPkg=savedPackages.find(p=>selectedBookingPkgIds.includes(p.id));
   sendConfirmationEmail(booking, selectedPkg);
   showToast('✔ Booking confirmed for '+name+'! Sending email...');
-  ['bk-name','bk-phone','bk-email','bk-date','bk-date-end','bk-guests','bk-advance','bk-pkg-rate','bk-notes','dg-min','dg-rate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  const duesF=document.getElementById('dues-field'); if(duesF) duesF.style.display='none';
-  const dgR=document.getElementById('dg-result'); if(dgR) dgR.textContent='—';
-  const dgB=document.getElementById('dg-breakdown'); if(dgB) dgB.textContent='';
+  ['bk-name','bk-phone','bk-email','bk-date','bk-date-end','bk-guests','bk-advance','bk-pkg-rate','bk-notes','dg-min','dg-rate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';
+  const df=document.getElementById('dues-field');if(df)df.style.display='none';
+  const dgr=document.getElementById('dg-result');if(dgr)dgr.textContent='---';});
   selectedBookingPkgIds=[];
   document.querySelectorAll('.bk-pkg-card').forEach(c=>c.classList.remove('selected'));
   document.querySelector('input[name="date-type"][value="single"]').checked=true;
@@ -1448,23 +1457,171 @@ function addBooking(){
 function bookingWhatsApp(id){
   const b = bookings.find(x=>x.id===id);
   if(!b) return;
-  const dateStr = b.dateEnd && b.dateEnd!==b.date
-    ? formatDate(b.date)+' থেকে '+formatDate(b.dateEnd)
-    : formatDate(b.date);
-  const msg = 'নমস্কার '+b.name+' জি 🙏\n\n'
-    + 'আমন্ত্রণ Banquet এ আপনার বুকিং নিশ্চিত হয়েছে।\n\n'
-    + '📋 বিবরণ:\n'
-    + '• অনুষ্ঠান: '+b.type+'\n'
-    + '• তারিখ: '+dateStr+'\n'
-    + '• অতিথি সংখ্যা: '+(b.guests||'—')+'\n'
-    + (b.pkg&&b.pkg!=='Custom'?'• প্যাকেজ: '+b.pkg+'\n':'')
-    + (b.advance?'• অগ্রিম পরিশোধ: ₹'+Number(b.advance).toLocaleString('en-IN')+'\n':'')
-    + (b.notes?'• বিশেষ নির্দেশ: '+b.notes+'\n':'')
-    + '\nধন্যবাদ 🏛️\nআমন্ত্রণ Banquet, বাঁকুড়া';
-  const phone = String(b.phone).replace(/\D/g,'');
+  const dateStr = b.dateEnd&&b.dateEnd!==b.date ? formatDate(b.date)+' to '+formatDate(b.dateEnd) : formatDate(b.date);
+  const totalPaid = getTotalPaid(b);
+  const dues = getBalanceDues(b);
+  let msg = 'AAMANTRAN Banquet - Booking Confirmed!\n\n';
+  msg += 'Name: '+b.name+'\n';
+  msg += 'Event: '+b.type+'\n';
+  msg += 'Date: '+dateStr+'\n';
+  msg += 'Guests: '+(b.guests||'---')+'\n';
+  if(b.pkg&&b.pkg!=='Custom') msg += 'Package: '+b.pkg+'\n';
+  if(b.pkgRate) msg += 'Rate: Rs '+Number(b.pkgRate).toLocaleString('en-IN')+'\n';
+  if(b.advance) msg += 'Advance: Rs '+Number(b.advance).toLocaleString('en-IN')+'\n';
+  if(b.payments&&b.payments.length){
+    b.payments.forEach(function(p){ msg += 'Payment'+(p.note?' ('+p.note+')':'')+': Rs '+Number(p.amt).toLocaleString('en-IN')+' ('+formatDate(p.date)+')\n'; });
+  }
+  if(b.pkgRate) msg += dues<=0 ? 'Status: FULLY PAID\n' : 'Balance Dues: Rs '+dues.toLocaleString('en-IN')+'\n';
+  if(b.notes) msg += 'Note: '+b.notes+'\n';
+  msg += '\nAAMANTRAN Banquet, Bankura 722160';
+  const phone = String(b.phone||'').replace(/\D/g,'');
   const clean = phone.startsWith('91')&&phone.length===12?phone.slice(2):phone;
-  window.open('https://wa.me/91'+clean+'?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/'+(clean.length>=10?'91'+clean:'')+'?text='+encodeURIComponent(msg),'_blank');
 }
+
+function getTotalPaid(b){
+  return Number(b.advance||0)+(b.payments||[]).reduce((s,p)=>s+Number(p.amt||0),0);
+}
+function getBalanceDues(b){
+  return Math.max(0,Number(b.pkgRate||0)-getTotalPaid(b));
+}
+function getBookingFinanceHTML(b){
+  const paid=getTotalPaid(b), dues=getBalanceDues(b);
+  const cls=dues<=0?'paid-tag':'dues-tag';
+  const duesText=dues<=0?'Fully Paid':'Dues: Rs '+dues.toLocaleString('en-IN');
+  return '<p style="font-size:0.75rem;color:#555;margin-top:3px">Rate: Rs '+Number(b.pkgRate).toLocaleString('en-IN')+
+    ' | Advance: Rs '+Number(b.advance||0).toLocaleString('en-IN')+
+    ' | <span class="'+cls+'">'+duesText+'</span></p>';
+}
+function getPaymentHistoryHTML(b){
+  if(!b.payments||!b.payments.length) return '';
+  return '<p style="font-size:0.7rem;color:#888;margin-top:3px">'+
+    b.payments.map(p=>'Paid '+formatDate(p.date)+': Rs '+Number(p.amt).toLocaleString('en-IN')+(p.note?' ('+p.note+')':'')).join(' | ')+'</p>';
+}
+
+let currentPayId=null;
+function showPaymentPanel(id){
+  const b=bookings.find(x=>x.id===id);
+  if(!b) return;
+  currentPayId=id;
+  const paid=getTotalPaid(b), dues=getBalanceDues(b);
+  const info=document.getElementById('payment-modal-info');
+  if(info) info.innerHTML='<strong>'+b.name+'</strong> - '+b.type+
+    (b.pkgRate?'<br>Rate: Rs '+Number(b.pkgRate).toLocaleString('en-IN'):'')+'<br>Paid: Rs '+paid.toLocaleString('en-IN')+
+    (dues?' | <span style="color:#c0392b">Dues: Rs '+dues.toLocaleString('en-IN')+'</span>':'<span style="color:#27ae60"> | Fully Paid</span>');
+  document.getElementById('pay-date').value=today();
+  document.getElementById('pay-amt').value=dues||'';
+  document.getElementById('pay-note').value='';
+  const m=document.getElementById('payment-modal');
+  if(m) m.style.display='flex';
+}
+
+function closePaymentModal(){
+  const m=document.getElementById('payment-modal');
+  if(m) m.style.display='none';
+  currentPayId=null;
+}
+
+function addPayment(){
+  const b=bookings.find(x=>x.id===currentPayId);
+  if(!b){showToast('Error: booking not found');return;}
+  const date=document.getElementById('pay-date').value;
+  const amt=Number(document.getElementById('pay-amt').value||0);
+  const note=document.getElementById('pay-note').value.trim();
+  if(!amt||!date){showToast('Date এবং Amount দিন');return;}
+  if(!b.payments) b.payments=[];
+  b.payments.push({date,amt,note,id:Date.now()});
+  transactions.unshift({desc:'Payment - '+b.name+' ('+b.type+')'+(note?' - '+note:''),amt,type:'income',date,id:Date.now()});
+  saveToStorage();
+  syncSheet('Bookings',bookings);
+  syncSheet('Transactions',transactions);
+  renderBookings();
+  renderAccounts();
+  closePaymentModal();
+  const dues=getBalanceDues(b);
+  showToast(dues<=0?'Payment complete! Fully paid':'Payment saved! Dues: Rs '+dues.toLocaleString('en-IN'));
+}
+
+
+function generateFinalBill(id){
+  const b=bookings.find(x=>x.id===id);
+  if(!b) return;
+  const totalPaid=getTotalPaid(b), dues=getBalanceDues(b);
+  const dateStr=b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' to '+formatDate(b.dateEnd):formatDate(b.date);
+  let payRows='';
+  if(Number(b.advance||0)>0) payRows+='<tr><td>Advance</td><td>'+formatDate(b.date)+'</td><td style="text-align:right">Rs '+Number(b.advance).toLocaleString('en-IN')+'</td></tr>';
+  (b.payments||[]).forEach(function(p){ payRows+='<tr><td>Payment'+(p.note?' ('+p.note+')':'')+'</td><td>'+formatDate(p.date)+'</td><td style="text-align:right">Rs '+Number(p.amt).toLocaleString('en-IN')+'</td></tr>'; });
+
+  const html='<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif}.hdr{text-align:center;border-bottom:2px solid #c9a84c;padding-bottom:16px;margin-bottom:20px}.hdr h1{font-size:1.4rem;letter-spacing:4px;color:#c9a84c}.hdr p{font-size:0.72rem;color:#888;margin-top:4px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;background:#fffdf7;padding:14px;border-left:3px solid #c9a84c}.lbl{font-size:0.62rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:2px}.val{font-size:0.88rem}table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:0.82rem}th{background:#1a0f05;color:#c9a84c;padding:7px 10px;text-align:left;font-size:0.68rem;letter-spacing:1px}td{padding:7px 10px;border-bottom:1px solid #f0ebe0}.tot td{font-weight:bold;background:#fffdf7}.drow td{color:#c0392b;font-weight:bold;font-size:0.95rem}.prow td{color:#27ae60;font-weight:bold}.sec{font-size:0.68rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin:16px 0 8px;border-bottom:1px solid #e8e0ce;padding-bottom:4px}.ftr{text-align:center;margin-top:24px;padding-top:14px;border-top:1px solid #e8e0ce;font-size:0.68rem;color:#aaa}@media print{.no-print{display:none}}</style>'+
+    '<div class="hdr"><h1>AAMANTRAN BANQUET</h1><p>Lakshmisagar, S B I Bank Complex, Bankura, 722160, WB</p><p style="margin-top:6px;color:#c9a84c;letter-spacing:2px">FINAL BILL</p></div>'+
+    '<div class="grid"><div><div class="lbl">Client</div><div class="val">'+b.name+'</div></div><div><div class="lbl">Phone</div><div class="val">'+(b.phone||'---')+'</div></div><div><div class="lbl">Event</div><div class="val">'+b.type+'</div></div><div><div class="lbl">Date</div><div class="val">'+dateStr+'</div></div><div><div class="lbl">Guests</div><div class="val">'+(b.guests||'---')+'</div></div><div><div class="lbl">Package</div><div class="val">'+(b.pkg||'Custom')+'</div></div></div>'+
+    (b.notes?'<p style="font-size:0.78rem;color:#777;margin-bottom:16px">Note: '+b.notes+'</p>':'')+
+    '<div class="sec">Billing Summary</div>'+
+    '<table><thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+
+    (b.pkgRate?'<tr><td>Package Rate ('+(b.pkg||'Custom')+')</td><td style="text-align:right">Rs '+Number(b.pkgRate).toLocaleString('en-IN')+'</td></tr>':'')+
+    '<tr class="tot"><td>Total Charges</td><td style="text-align:right">Rs '+Number(b.pkgRate||0).toLocaleString('en-IN')+'</td></tr></tbody></table>'+
+    '<div class="sec">Payment History</div>'+
+    '<table><thead><tr><th>Type</th><th>Date</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+
+    payRows+
+    '<tr class="tot"><td colspan="2">Total Paid</td><td style="text-align:right">Rs '+totalPaid.toLocaleString('en-IN')+'</td></tr>'+
+    '<tr class="'+(dues<=0?'prow':'drow')+'"><td colspan="2">'+(dues<=0?'FULLY PAID':'BALANCE DUES')+'</td><td style="text-align:right">Rs '+Math.abs(dues).toLocaleString('en-IN')+'</td></tr>'+
+    '</tbody></table>'+
+    '<div class="ftr">AAMANTRAN Banquet - '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</div>';
+
+  const area=document.getElementById('bill-content-area');
+  if(area) area.innerHTML=html;
+
+  // Store WA data
+  window._billBookingId=id;
+
+  const modal=document.getElementById('bill-modal');
+  if(modal) modal.style.display='flex';
+}
+
+function printBillModal(){
+  const area = document.getElementById('bill-content-area');
+  if(!area) return;
+  const content = area.innerHTML;
+  const fullHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AAMANTRAN Banquet Bill</title>'+
+    '<style>body{font-family:Georgia,serif;max-width:720px;margin:30px auto;padding:30px;color:#1a0f05}'+
+    '@media print{body{margin:0;padding:20px}}</style></head>'+
+    '<body>'+content+'<script>window.onload=function(){window.print();}<\/script></body></html>';
+  const blob = new Blob([fullHtml], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+}
+
+function closeBillModal(){
+  const m=document.getElementById('bill-modal');
+  if(m) m.style.display='none';
+}
+
+function billModalWA(){
+  const id=window._billBookingId;
+  if(!id) return;
+  const b=bookings.find(x=>x.id===id);
+  if(!b) return;
+  const totalPaid=getTotalPaid(b), dues=getBalanceDues(b);
+  const dateStr=b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' to '+formatDate(b.dateEnd):formatDate(b.date);
+  let msg='AAMANTRON BANQUET - FINAL BILL\nLakshmisagar, Bankura 722160\n\n';
+  msg+=b.name+' | '+b.type+'\n'+dateStr+'\n';
+  if(b.guests) msg+='Guests: '+b.guests+'\n';
+  if(b.pkg&&b.pkg!=='Custom') msg+='Package: '+b.pkg+'\n';
+  if(b.pkgRate) msg+='Rate: Rs '+Number(b.pkgRate).toLocaleString('en-IN')+'\n';
+  msg+='\nPayments:\n';
+  if(Number(b.advance||0)>0) msg+='Advance ('+formatDate(b.date)+'): Rs '+Number(b.advance).toLocaleString('en-IN')+'\n';
+  (b.payments||[]).forEach(function(p){ msg+='Payment'+(p.note?' ('+p.note+')':'')+' ('+formatDate(p.date)+'): Rs '+Number(p.amt).toLocaleString('en-IN')+'\n'; });
+  msg+='\nTotal Paid: Rs '+totalPaid.toLocaleString('en-IN')+'\n';
+  msg+=dues<=0?'Status: FULLY PAID':'Balance Dues: Rs '+dues.toLocaleString('en-IN');
+  const ph=String(b.phone||'').replace(/\D/g,'');
+  const cl=ph.startsWith('91')&&ph.length===12?ph.slice(2):ph;
+  window.open('https://wa.me/'+(cl.length>=10?'91'+cl:'')+'?text='+encodeURIComponent(msg),'_blank');
+}
+
 
 function cancelBooking(id){
   const b=bookings.find(b=>b.id===id);
@@ -1510,8 +1667,10 @@ function renderBookings(){
     <div class="booking-item" id="bk-${b.id}">
       <div class="booking-info">
         <h4>${b.name} — ${b.type}</h4>
-        <p>${b.pkg?b.pkg+' Package':''} · ${b.guests||'?'} guests · ${b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' → '+formatDate(b.dateEnd):formatDate(b.date)}${b.advance?' · Advance: ₹'+Number(b.advance).toLocaleString('en-IN'):''}${b.pkgRate?' · Rate: ₹'+Number(b.pkgRate).toLocaleString('en-IN'):''}${b.dues?' · <span style="color:#c0392b">Dues: ₹'+Number(b.dues).toLocaleString('en-IN')+'</span>':''}</p>
-        ${b.notes?'<p style="font-size:0.75rem;color:#999;margin-top:2px">📝 '+b.notes+'</p>':''}
+        <p>${b.pkg?b.pkg+' Package':''} · ${b.guests||'?'} guests · ${b.dateEnd&&b.dateEnd!==b.date?formatDate(b.date)+' to '+formatDate(b.dateEnd):formatDate(b.date)}</p>
+        ${b.pkgRate?getBookingFinanceHTML(b):''}
+        ${b.notes?'<p style="font-size:0.75rem;color:#999;margin-top:2px">Note: '+b.notes+'</p>':''}
+        ${getPaymentHistoryHTML(b)}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
         <span class="booking-badge ${b.status==='Cancelled'?'badge-cancelled':'badge-confirmed'}">${b.status==='Cancelled'?'✕ Cancelled':'✔ Confirmed'}</span>
@@ -1520,7 +1679,9 @@ function renderBookings(){
           ${(isAdmin||isManager)?`
           <button onclick="editBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid var(--gold);color:var(--gold);cursor:pointer">✏ Edit</button>
           <button onclick="cancelBooking(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #e57373;color:#e57373;cursor:pointer">${b.status==='Cancelled'?'↩ Restore':'✕ Cancel'}</button>
-          <button onclick="printBookingById(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #555;color:#555;cursor:pointer">🖨 Print</button>
+          <button onclick="printBookingById(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:none;border:1px solid #555;color:#555;cursor:pointer">Print</button>
+          <button onclick="showPaymentPanel(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:#1a7a40;color:#fff;border:none;cursor:pointer;border-radius:2px">Payment</button>
+          <button onclick="generateFinalBill(${b.id})" style="font-size:0.65rem;padding:3px 8px;background:var(--dark);color:var(--gold);border:1px solid var(--gold);cursor:pointer">Bill</button>
           `:''}
         </div>
       </div>
@@ -1810,18 +1971,39 @@ function sendConfirmationEmail(booking, pkg){
   const mailtoLink=`mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${body}`;
 
   // WhatsApp message
-  const waMsg = `🎉 *আমন্ত্রণ Banquet — Booking Confirmed!*\n\n`+
-    `নমস্কার *${booking.name}*,\n`+
-    `আপনার booking সফলভাবে নিশ্চিত হয়েছে। বিস্তারিত নিচে দেওয়া হলো:\n\n`+
-    `📋 *Event:* ${booking.type}\n`+
-    `📅 *Date:* ${formatDate(booking.date)}\n`+
-    `👥 *Guests:* ${booking.guests||'—'}\n`+
-    `📦 *Package:* ${pkgDetails}\n`+
-    `✅ *Facilities:* ${facilities}\n`+
-    `💰 *Advance Paid:* ${advance}\n`+
-    `📝 *Special Notes:* ${booking.notes||'None'}\n\n`+
-    `আপনার অনুষ্ঠানকে সুন্দর করতে আমরা সর্বদা প্রস্তুত। 🙏\n`+
-    `— *আমন্ত্রণ Banquet*`;
+  const pkgRate = Number(booking.pkgRate||0);
+  const advanceAmt = Number(booking.advance||0);
+  const totalPaidNow = advanceAmt + (booking.payments||[]).reduce((s,p)=>s+Number(p.amt||0),0);
+  const duesNow = pkgRate>0 ? Math.max(0, pkgRate-totalPaidNow) : 0;
+  const dateStr = booking.dateEnd&&booking.dateEnd!==booking.date
+    ? formatDate(booking.date)+' to '+formatDate(booking.dateEnd)
+    : formatDate(booking.date);
+
+  let waMsg = '🎉 *AAMANTRAN Banquet — Booking Confirmed!*\n\n';
+  waMsg += 'নমস্কার *'+booking.name+'*,\n';
+  waMsg += 'আপনার booking সফলভাবে নিশ্চিত হয়েছে।\n\n';
+  waMsg += '📋 *Event:* '+booking.type+'\n';
+  waMsg += '📅 *Date:* '+dateStr+'\n';
+  waMsg += '👥 *Guests:* '+(booking.guests||'—')+'\n';
+  waMsg += '📦 *Package:* '+pkgDetails+'\n';
+  if(pkgRate>0) waMsg += '💵 *Package Rate:* Rs '+pkgRate.toLocaleString('en-IN')+'\n';
+  waMsg += '\n💳 *Payment Details:*\n';
+  if(advanceAmt>0) waMsg += '• Advance: Rs '+advanceAmt.toLocaleString('en-IN')+'\n';
+  if(booking.payments&&booking.payments.length){
+    booking.payments.forEach(function(p){
+      waMsg += '• Payment'+(p.note?' ('+p.note+')':'')+' ('+formatDate(p.date)+'): Rs '+Number(p.amt).toLocaleString('en-IN')+'\n';
+    });
+  }
+  if(pkgRate>0){
+    waMsg += '• Total Paid: Rs '+totalPaidNow.toLocaleString('en-IN')+'\n';
+    waMsg += duesNow<=0 ? '✅ *FULLY PAID*\n' : '⚠️ *Dues: Rs '+duesNow.toLocaleString('en-IN')+'*\n';
+  } else if(advanceAmt>0){
+    waMsg += '• Advance Paid: Rs '+advanceAmt.toLocaleString('en-IN')+'\n';
+  }
+  if(facilities&&facilities!=='—') waMsg += '\n✅ *Facilities:* '+facilities+'\n';
+  if(booking.notes&&booking.notes!=='None'&&booking.notes!=='none') waMsg += '📝 *Notes:* '+booking.notes+'\n';
+  waMsg += '\nআপনার অনুষ্ঠানকে সুন্দর করতে আমরা সর্বদা প্রস্তুত। 🙏\n';
+  waMsg += '— *AAMANTRAN Banquet, Bankura*';
 
   const rawPhone = String(booking.phone||'').replace(/\D/g,'');
   // Remove leading 91 or 0 if already present
@@ -1841,52 +2023,43 @@ function printBookingById(id){
 }
 
 function printBookingDetails(booking){
-  const w = window.open('','_blank','width=800,height=600');
-  const dateStr = booking.dateEnd && booking.dateEnd!==booking.date
-    ? formatDate(booking.date)+' → '+formatDate(booking.dateEnd)
+  const dateStr = booking.dateEnd&&booking.dateEnd!==booking.date
+    ? formatDate(booking.date)+' to '+formatDate(booking.dateEnd)
     : formatDate(booking.date);
-  w.document.write(`<!DOCTYPE html><html><head>
-    <meta charset="UTF-8">
-    <title>Booking — ${booking.name}</title>
-    <style>
-      body{font-family:'Georgia',serif;max-width:700px;margin:40px auto;padding:30px;color:#1a0f05}
-      .header{text-align:center;border-bottom:2px solid #c9a84c;padding-bottom:20px;margin-bottom:24px}
-      .header h1{font-size:1.6rem;letter-spacing:4px;color:#c9a84c;margin:0}
-      .header p{font-size:0.8rem;letter-spacing:2px;color:#888;margin:4px 0 0}
-      .section{margin-bottom:20px}
-      .label{font-size:0.7rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:3px}
-      .value{font-size:1rem;color:#1a0f05;border-bottom:1px solid #e8e0ce;padding-bottom:6px}
-      .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-      .footer{text-align:center;margin-top:30px;padding-top:16px;border-top:1px solid #e8e0ce;font-size:0.75rem;color:#888}
-      .status{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 14px;border-radius:2px;font-size:0.75rem;letter-spacing:1px}
-      @media print{body{margin:0}}
-    </style>
-  </head><body>
-    <div class="header">
-      <h1>আমন্ত্রণ BANQUET</h1>
-      <p style="font-size:0.75rem;color:#888;margin:2px 0">Lakshmisagar, S B I Bank Complex, Bankura, 722160, WB</p>
-      <p>BOOKING CONFIRMATION</p>
-    </div>
-    <div class="grid">
-      <div class="section"><div class="label">Client Name</div><div class="value">${booking.name||'—'}</div></div>
-      <div class="section"><div class="label">Phone</div><div class="value">${booking.phone||'—'}</div></div>
-      <div class="section"><div class="label">Email</div><div class="value">${booking.email||'—'}</div></div>
-      <div class="section"><div class="label">Event Type</div><div class="value">${booking.type||'—'}</div></div>
-      <div class="section"><div class="label">Event Date</div><div class="value">${dateStr}</div></div>
-      <div class="section"><div class="label">Guests</div><div class="value">${booking.guests||'—'}</div></div>
-      <div class="section"><div class="label">Package</div><div class="value">${booking.pkg||'Custom'}</div></div>
-      <div class="section"><div class="label">Advance Paid</div><div class="value">${booking.advance?'₹'+Number(booking.advance).toLocaleString('en-IN'):'Not paid'}</div></div>
-    </div>
-    <div class="section"><div class="label">Special Notes</div><div class="value">${booking.notes||'None'}</div></div>
-    <div class="section"><div class="label">Status</div><div><span class="status">✔ ${booking.status||'Confirmed'}</span></div></div>
-    <div class="footer">
-      আমন্ত্রণ Banquet · Printed on ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}
-    </div>
-  </body></html>`);
-  w.document.close();
-  w.focus();
-  setTimeout(()=>w.print(), 500);
+  const html = '<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif;color:#1a0f05}'+
+    '.hdr{text-align:center;border-bottom:2px solid #c9a84c;padding-bottom:16px;margin-bottom:20px}'+
+    '.hdr h1{font-size:1.4rem;letter-spacing:4px;color:#c9a84c}'+
+    '.hdr p{font-size:0.72rem;color:#888;margin-top:4px}'+
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;background:#fffdf7;padding:14px;border-left:3px solid #c9a84c}'+
+    '.lbl{font-size:0.62rem;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:2px}'+
+    '.val{font-size:0.88rem}'+
+    '.status{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 14px;font-size:0.75rem;letter-spacing:1px}'+
+    '.ftr{text-align:center;margin-top:24px;padding-top:14px;border-top:1px solid #e8e0ce;font-size:0.68rem;color:#aaa}'+
+    '@media print{.no-print{display:none}}</style>'+
+    '<div class="hdr"><h1>AAMANTRAN BANQUET</h1>'+
+    '<p>Lakshmisagar, S B I Bank Complex, Bankura, 722160, WB</p>'+
+    '<p style="margin-top:6px;color:#c9a84c;letter-spacing:2px">BOOKING CONFIRMATION</p></div>'+
+    '<div class="grid">'+
+    '<div><div class="lbl">Client Name</div><div class="val">'+(booking.name||'---')+'</div></div>'+
+    '<div><div class="lbl">Phone</div><div class="val">'+(booking.phone||'---')+'</div></div>'+
+    '<div><div class="lbl">Email</div><div class="val">'+(booking.email||'---')+'</div></div>'+
+    '<div><div class="lbl">Event Type</div><div class="val">'+(booking.type||'---')+'</div></div>'+
+    '<div><div class="lbl">Event Date</div><div class="val">'+dateStr+'</div></div>'+
+    '<div><div class="lbl">Guests</div><div class="val">'+(booking.guests||'---')+'</div></div>'+
+    '<div><div class="lbl">Package</div><div class="val">'+(booking.pkg||'Custom')+'</div></div>'+
+    '<div><div class="lbl">Advance Paid</div><div class="val">'+(booking.advance?'Rs '+Number(booking.advance).toLocaleString('en-IN'):'Not paid')+'</div></div>'+
+    '</div>'+
+    '<div style="margin-bottom:16px"><div class="lbl" style="margin-bottom:6px">Special Notes</div><div class="val">'+(booking.notes||'None')+'</div></div>'+
+    '<div><span class="status">OK '+(booking.status||'Confirmed')+'</span></div>'+
+    '<div class="ftr">AAMANTRAN Banquet - '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})+'</div>';
+
+  window._billBookingId = booking.id;
+  const area = document.getElementById('bill-content-area');
+  if(area) area.innerHTML = html;
+  const modal = document.getElementById('bill-modal');
+  if(modal) modal.style.display = 'flex';
 }
+
 
 function showConfirmPanel(booking, mailtoLink, waLink, adminEmail){
   const old=document.getElementById('email-confirm-panel');
@@ -2036,16 +2209,18 @@ function setSheetsURL(url){
 
 async function sheetsFetch(payload){
   if(!SHEETS_URL) return null;
-  try {
-    // Use no-cors for POST (fire & forget — Apps Script saves data)
-    await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-    return true;
-  } catch(e){ console.warn('Sheets POST error:', e); return null; }
+  // Use JSONP-style GET for save (works from GitHub Pages)
+  return await new Promise((resolve) => {
+    const cb = '_save' + Date.now();
+    const el = document.createElement('script');
+    const t = setTimeout(()=>{ delete window[cb]; try{el.remove()}catch(e){} resolve(null); }, 8000);
+    window[cb] = (d) => { clearTimeout(t); delete window[cb]; try{el.remove()}catch(e){} resolve(d); };
+    el.onerror = () => { clearTimeout(t); delete window[cb]; resolve(null); };
+    // Encode payload as base64 to avoid URL issues
+    const data = encodeURIComponent(JSON.stringify(payload));
+    el.src = SHEETS_URL + '?callback=' + cb + '&payload=' + data;
+    document.body.appendChild(el);
+  });
 }
 
 function cleanRows(data){
@@ -2107,40 +2282,48 @@ async function syncAll(){
 
 async function loadFromSheets(){
   if(!SHEETS_URL) return false;
+  showToast('📥 Google Sheets থেকে data আনা হচ্ছে...');
   try {
     const [bks, pkgs, txns, revs, deco, socs] = await Promise.all([
-      sheetsGet('Bookings'), sheetsGet('Packages'), sheetsGet('Transactions'),
+      sheetsGet('Bookings'), sheetsGet('Packages'),
+      sheetsGet('Transactions'),
       sheetsGet('Reviews'), sheetsGet('DecoItems'), sheetsGet('SocialLinks')
     ]);
     let loaded = false;
-    if(bks && bks.length){
-      const b2 = bks.filter(b=>b&&b.name).map(b=>({...b,
+    if(bks && Array.isArray(bks) && bks.length){
+      const cleaned = bks.filter(b=>b&&b.name).map(b=>({
+        ...b,
         date: normalizeDate(b.date),
         dateEnd: normalizeDate(b.dateEnd)||normalizeDate(b.date),
         pkgIds: tryParse(b.pkgIds)||[],
-        status: b.status||'Confirmed'
+        payments: tryParse(b.payments)||[],
+        facilities: tryParse(b.facilities),
+        status: b.status||'Confirmed',
+        advance: Number(b.advance||0),
+        pkgRate: Number(b.pkgRate||0),
+        guests: Number(b.guests||0)
       }));
-      if(b2.length){ bookings = b2; loaded = true; }
+      if(cleaned.length){ bookings = cleaned; loaded = true; }
     }
-    if(pkgs && pkgs.length){
-      const p2 = pkgs.filter(p=>p&&p.name).map(p=>({...p,
+    if(pkgs && Array.isArray(pkgs) && pkgs.length){
+      const cleanedPkgs = pkgs.filter(p=>p&&p.name).map(p=>({...p,
         facilities: tryParse(p.facilities),
-        timeStart: normalizeTime(p.timeStart||''),
-        timeEnd: normalizeTime(p.timeEnd||'')
+        timeStart: p.timeStart ? normalizeTime(p.timeStart) : '',
+        timeEnd: p.timeEnd ? normalizeTime(p.timeEnd) : ''
       }));
-      if(p2.length){ savedPackages = p2; loaded = true; }
+      if(cleanedPkgs.length){ savedPackages = cleanedPkgs; loaded = true; }
     }
-    if(txns && txns.length){ transactions = txns.filter(t=>t&&t.desc); loaded = true; }
-    if(revs && revs.length){ reviews = revs.filter(r=>r&&r.name); loaded = true; }
-    if(deco && deco.length){ decoItems = deco.filter(d=>d&&d.name); loaded = true; }
-    if(socs && socs.length){ socialLinks = socs.filter(s=>s&&s.url); loaded = true; }
-    if(loaded){
-      saveToStorage();
-      showToast('✅ Data sync সম্পন্ন!');
-    }
+    if(txns && Array.isArray(txns) && txns.length){ transactions = txns; loaded = true; }
+    // albums removed
+    if(revs && Array.isArray(revs) && revs.length){ reviews = revs; loaded = true; }
+    if(deco && Array.isArray(deco) && deco.length){ decoItems = deco; loaded = true; }
+    if(socs && Array.isArray(socs) && socs.length){ socialLinks = socs; loaded = true; }
+    if(loaded){ saveToStorage(); showToast('✅ Google Sheets থেকে data লোড হয়েছে!'); }
+    else { showToast('⚠ Sheets এ কোনো data পাওয়া যায়নি — local data ব্যবহার হচ্ছে'); }
     return loaded;
   } catch(e){
     console.warn('Sheets load error:', e);
+    showToast('⚠ Sheets load failed — local data ব্যবহার হচ্ছে');
     return false;
   }
 }
@@ -2156,6 +2339,11 @@ function saveToStorage(){
     localStorage.setItem('aamantran_packages', JSON.stringify(savedPackages));
     localStorage.setItem('aamantran_bookings', JSON.stringify(bookings));
     localStorage.setItem('aamantran_transactions', JSON.stringify(transactions));
+    localStorage.setItem('aamantran_albums', JSON.stringify(albums));
+    localStorage.setItem('aamantran_videos', JSON.stringify(videos));
+    // Save gallery (store only metadata, not base64 to avoid quota)
+    const galleryMeta = galleryItems.map(g=>({caption:g.caption,cat:g.cat,icon:g.icon,src:g.src&&g.src.length<500000?g.src:null}));
+    localStorage.setItem('aamantran_gallery', JSON.stringify(galleryMeta));
     localStorage.setItem('aamantran_reviews', JSON.stringify(reviews));
     localStorage.setItem('aamantran_deco', JSON.stringify(decoItems));
     localStorage.setItem('aamantran_social', JSON.stringify(socialLinks));
@@ -2167,16 +2355,29 @@ function loadFromStorage(){
     const pkgs = localStorage.getItem('aamantran_packages');
     if(pkgs) savedPackages = JSON.parse(pkgs);
     const bks = localStorage.getItem('aamantran_bookings');
-    if(bks){ bookings = JSON.parse(bks).map(b=>({...b, date:normalizeDate(b.date), dateEnd:normalizeDate(b.dateEnd||b.date)})); }
+    if(bks){ bookings = JSON.parse(bks).map(b=>({...b, date:normalizeDate(b.date), dateEnd:normalizeDate(b.dateEnd||b.date), payments:b.payments||[], status:b.status||'Confirmed', pkgRate:Number(b.pkgRate||0)})); }
     const txns = localStorage.getItem('aamantran_transactions');
     if(txns) transactions = JSON.parse(txns);
+    // albums/videos removed
+    const gals = localStorage.getItem('aamantran_gallery');
+    if(gals){
+      const saved=JSON.parse(gals);
+      // Merge saved gallery with defaults (avoid duplicates)
+      saved.forEach(g=>{ if(!galleryItems.find(x=>x.caption===g.caption)) galleryItems.unshift(g); });
+    }
     const revs = localStorage.getItem('aamantran_reviews');
     if(revs) reviews = JSON.parse(revs);
     const deco = localStorage.getItem('aamantran_deco');
     if(deco) decoItems = JSON.parse(deco);
     const soc = localStorage.getItem('aamantran_social');
     if(soc) socialLinks = JSON.parse(soc);
-  } catch(e){ console.warn('Storage load error:', e); }
+    // Load master facilities (merge with defaults)
+    const mf = localStorage.getItem('aamantran_master_facilities');
+    if(mf){
+      const saved=JSON.parse(mf);
+      saved.forEach(f=>{ if(!masterFacilities.includes(f)) masterFacilities.push(f); });
+    }
+  } catch(e){ console.warn('Load error:', e); }
 }
 
 // ── PIN & ACCESS SYSTEM ──────────────────────
