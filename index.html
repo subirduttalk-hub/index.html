@@ -987,6 +987,10 @@
     </div>
 
     <button class="settings-reset" onclick="resetSettings()">↺ RESET TO DEFAULT</button>
+    <div style="margin-top:16px;border-top:1px solid rgba(201,168,76,0.2);padding-top:16px">
+      <button onclick="clearAllBookingData()" style="width:100%;padding:10px;background:#c0392b;color:#fff;border:none;font-family:Cinzel,serif;font-size:0.7rem;letter-spacing:2px;cursor:pointer">🗑 CLEAR ALL BOOKINGS & TRANSACTIONS</button>
+      <p style="font-size:0.65rem;color:#999;margin-top:6px;text-align:center">App + localStorage + Google Sheet সব clear হবে</p>
+    </div>
   </div>
 </div>
 
@@ -1012,41 +1016,8 @@ let savedPackages = [
   {id:1776724222812,name:"diamond pro max",rate:49999,rateType:"per event",persons:899,timeStart:"08:00",timeEnd:"19:00",facilities:["Stall Shade","Our Listed Kitchen Utensils","Big Kitchen","DG backup with extra diesel 3lit / hr.","Wash Room (Ground Floor — 2)","Ananda Lawn — With Lightings","I ❤️ Lakshmisagar Selfie (With Fountain)","Three Bed Room with 17 Sleeping Arrangements","Reception Room","Small Kitchen","Common Wash Room (1st Floor)","Hall 1 (1st Floor)","three bed room (ac) with sleeping for 17 persons","first dinning hall with 120 covered seat capacity","Hall (Ground Floor)","Utsab Lawn — With Lightings"]}
 ];
 let selectedBookingPkgIds = [];
-let bookings = [
-  {id:1777398382127,name:"red",phone:"",email:"",date:"2026-05-05",dateEnd:"2026-05-07",type:"Rice Ceremony",guests:0,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1777396922397,name:"subhas chandra dutta",phone:"9474565101",email:"",date:"2026-05-24",dateEnd:"2026-05-24",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:49999,payments:[],notes:"",pkg:"diamond pro max",pkgIds:[1776724222812],status:"Confirmed"},
-  {id:1777310223451,name:"anita",phone:"",email:"",date:"2026-04-25",dateEnd:"2026-04-27",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1777015040062,name:"subir",phone:"9434439553",email:"",date:"2026-07-29",dateEnd:"2026-07-29",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Cancelled"},
-  {id:1776887588408,name:"akash",phone:"9434439553",email:"",date:"2026-06-29",dateEnd:"2026-06-29",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776887527345,name:"akash",phone:"9434439553",email:"",date:"2026-05-28",dateEnd:"2026-05-28",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776887504532,name:"akash",phone:"9434439553",email:"",date:"2026-05-25",dateEnd:"2026-05-25",type:"Marriage Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853346636,name:"manas",phone:"9153164457",email:"",date:"2026-05-26",dateEnd:"2026-05-27",type:"Engagement Ceremony",guests:500,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853128338,name:"ddd",phone:"9434439553",email:"",date:"2026-05-06",dateEnd:"2026-05-07",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853066362,name:"ddd",phone:"9434439553",email:"",date:"2026-04-28",dateEnd:"2026-04-30",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776853009060,name:"ddd",phone:"9434439553",email:"",date:"2026-04-27",dateEnd:"2026-04-27",type:"Rice Ceremony",guests:500,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776846137951,name:"pal",phone:"9434439553",email:"",date:"2026-04-23",dateEnd:"2026-04-23",type:"Rice Ceremony",guests:350,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776770052086,name:"DD",phone:"9434887390",email:"",date:"2026-04-22",dateEnd:"2026-04-22",type:"Social Gathering",guests:200,advance:0,pkgRate:0,payments:[],notes:"N/A",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776719835782,name:"hhhhh",phone:"9434439553",email:"",date:"2026-04-20",dateEnd:"2026-04-20",type:"Rice Ceremony",guests:300,advance:5000,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776718909457,name:"fgfdg",phone:"",email:"",date:"2026-05-10",dateEnd:"2026-05-10",type:"Rice Ceremony",guests:0,advance:0,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"},
-  {id:1776717713369,name:"amit",phone:"9434439553",email:"",date:"2026-05-12",dateEnd:"2026-05-12",type:"Rice Ceremony",guests:500,advance:500,pkgRate:0,payments:[],notes:"",pkg:"Custom",pkgIds:[],status:"Confirmed"}
-];
-let transactions = [
-  {id:1777396922397,desc:"Advance — subhas chandra dutta (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-24"},
-  {id:1777310223451,desc:"Advance — anita (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-25"},
-  {id:1777015040062,desc:"Advance — subir (Rice Ceremony)",amt:5000,type:"income",date:"2026-07-29"},
-  {id:1776888446105,desc:"Advance — subir (Rice Ceremony)",amt:5000,type:"income",date:"2026-06-26"},
-  {id:1776887588408,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-06-29"},
-  {id:1776887527345,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-28"},
-  {id:1776887504532,desc:"Advance — akash (Marriage Ceremony)",amt:5000,type:"income",date:"2026-05-25"},
-  {id:1776853128338,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-05-06"},
-  {id:1776853066362,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-28"},
-  {id:1776853009060,desc:"Advance — ddd (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-27"},
-  {id:1776846137951,desc:"Advance — pal (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-23"},
-  {id:1776794697626,desc:"fffff",amt:3000,type:"income",date:"2026-04-27"},
-  {id:1776770052086,desc:"Advance — DD (Social Gathering)",amt:0,type:"income",date:"2026-04-22"},
-  {id:1776719835782,desc:"Advance — hhhhh (Rice Ceremony)",amt:5000,type:"income",date:"2026-04-20"},
-  {id:1776717713369,desc:"Advance — amit (Rice Ceremony)",amt:500,type:"income",date:"2026-05-12"}
-];
+let bookings = [];
+let transactions = [];
 let activeGalleryUploadCat = 'Wedding';
 let galleryItems = [
   {caption:'Grand Ballroom Setup',cat:'Marriage Ceremony',icon:'🌹'},
@@ -2196,6 +2167,25 @@ function updateTagline(val){
   const h1 = document.querySelector('.hero h1');
   h1.innerHTML = val + '<br><em>Celebration</em> Begins';
 }
+function clearAllBookingData(){
+  if(!confirm('সব Bookings আর Transactions delete হয়ে যাবে! নিশ্চিত?')) return;
+  // Clear in-memory
+  bookings = [];
+  transactions = [];
+  // Clear localStorage
+  localStorage.removeItem('aamantran_bookings');
+  localStorage.removeItem('aamantran_transactions');
+  // Clear Google Sheet
+  syncSheet('Bookings', []);
+  syncSheet('Transactions', []);
+  // Re-render
+  renderBookings();
+  renderCalendar();
+  renderAccounts();
+  toggleSettings();
+  showToast('✅ সব Bookings ও Transactions মুছে গেছে!');
+}
+
 function resetSettings(){
   document.documentElement.style.setProperty('--gold','#c9a84c');
   document.documentElement.style.setProperty('--cream','#faf5ec');
